@@ -1,32 +1,32 @@
 import discord
 from discord.ext import commands
-from test import get_ai_response
 import os
 from dotenv import load_dotenv
 
+# Import hàm RAG cục bộ (Phạm vi theo đề bài)
+from rag_pipeline import ask_ollama_async, MISTRAL_MODEL
+
 load_dotenv()
 
-# 2. Lấy giá trị bằng os.getenv
 discord_bot_token = os.getenv("discord_bot_token")
-# 1. Cấu hình Intents (Quyền hạn)
 intents = discord.Intents.default()
-intents.message_content = True  # Quan trọng: Cho phép đọc nội dung tin nhắn
+intents.message_content = True 
 
-# 2. Khởi tạo Bot
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f'✅ Bot đã online với tên: {bot.user}')
+    print(f'Bot đã online với tên: {bot.user}')
 
 @bot.command()
 async def ask(ctx, *, question):
-    async with ctx.typing(): # Hiệu ứng Bot đang gõ
-        # Gọi hàm từ file test.py
-        result = await get_ai_response("chỉ trả lời ngắn gọn trong 200 từ:" + question)
+    async with ctx.typing(): 
+        # Gọi hàm ask_ollama_async để chạy mô hình Local
+        # Sử dụng model Mistral 
+        result = await ask_ollama_async(question, model=MISTRAL_MODEL, top_k=3)
         
-        # Gửi trả lời lại Discord
-        await ctx.send(f"🤖 **AI trả lời:**\n{result}")
-
+        answer = result["answer"]
+        
+        await ctx.send(f"**Trợ lý Pháp lý Local:**\n{answer}")
 
 bot.run(discord_bot_token)

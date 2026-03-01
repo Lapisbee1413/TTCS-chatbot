@@ -8,6 +8,7 @@ import os
 import re
 import uuid
 from typing import List, Optional
+import docx
 
 import chromadb
 from chromadb.config import Settings
@@ -67,94 +68,113 @@ def get_collection():
 
 
 # ──────────────────────────────────────────────
-# 4. PDF READING
+# 4. DOCUMENT READING (Hỗ trợ PDF & DOCX)
 # ──────────────────────────────────────────────
 def read_pdf(pdf_path: str) -> str:
-    """Extract all text from a PDF file."""
     reader = PdfReader(pdf_path)
-    pages_text = []
-    for i, page in enumerate(reader.pages):
-        text = page.extract_text() or ""
-        pages_text.append(text)
-    full_text = "\n".join(pages_text)
-    print(f"[RAG] Extracted {len(full_text):,} characters from {len(reader.pages)} pages.")
-    return full_text
+    pages_text = [page.extract_text() or "" for page in reader.pages]
+    return "\n".join(pages_text)
 
+def read_docx(docx_path: str) -> str:
+    """Hàm đọc file DOCX"""
+    doc = docx.Document(docx_path)
+    return "\n".join([para.text for para in doc.paragraphs])
+
+def read_document(file_path: str) -> str:
+    """Tự động nhận diện đuôi file"""
+    ext = file_path.lower().split('.')[-1]
+    if ext == 'pdf':
+        text = read_pdf(file_path)
+    elif ext == 'docx':
+        text = read_docx(file_path)
+    else:
+        raise ValueError(f"Định dạng .{ext} chưa được hỗ trợ. Vui lòng dùng PDF hoặc DOCX.")
+    
+    print(f"[RAG] Đã trích xuất {len(text):,} ký tự từ {file_path}.")
+    return text
 
 # ──────────────────────────────────────────────
-# 5. CHUNKING
+# 5. CHUNKING (Pattern-based Chunking cho Luật)
 # ──────────────────────────────────────────────
-def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) -> List[str]:
+def chunk_legal_text(text: str) -> List[dict]:
     """
-    Split text into overlapping chunks.
-    Tries to break at sentence boundaries ('. ', '! ', '? ', '\n').
+    Chia đoạn dựa trên cấu trúc "Điều X".
+    Trả về danh sách dictionary gồm đoạn text và metadata (số Điều).
     """
-    # Normalise whitespace
+    # Chuẩn hóa khoảng trắng
     text = re.sub(r"\n{3,}", "\n\n", text.strip())
-
-    chunks: List[str] = []
-    start = 0
-    length = len(text)
-
-    while start < length:
-        end = min(start + chunk_size, length)
-
-        # Try to extend to a sentence boundary within the next 200 chars
-        if end < length:
-            boundary_search = text[end : end + 200]
-            match = re.search(r"[.!?\n]", boundary_search)
-            if match:
-                end = end + match.start() + 1  # include the punctuation
-
-        chunk = text[start:end].strip()
-        if chunk:
-            chunks.append(chunk)
-
-        # Next start respects overlap
-        next_start = end - overlap
-        start = next_start if next_start > start else start + 1
-
-    print(f"[RAG] Created {len(chunks)} chunks (size≈{chunk_size}, overlap={overlap}).")
-    return chunks
-
+    
+    # Biểu thức chính quy (Regex) tìm điểm chia: Bắt đầu bằng chữ "Điều" + Số
+    # Phép (?=...) giúp cắt mà không làm mất đi chữ "Điều" ở đầu chunk
+    pattern = r"(?i)(?=\bĐiều\s+\d+[\.\:])"
+    
+    raw_chunks = re.split(pattern, text)
+    chunks_with_meta = []
+    
+    for chunk in raw_chunks:
+        chunk = chunk.strip()
+        if not chunk: 
+            continue
+            
+        # Tìm xem chunk này thuộc Điều mấy để gắn vào metadata
+        match = re.match(r"(?i)(Điều\s+\d+)", chunk)
+        article_ref = match.group(1).title() if match else "Thông tin chung"
+        
+        chunks_with_meta.append({
+            "text": chunk,
+            "metadata": {"article_ref": article_ref}
+        })
+        
+    print(f"[RAG] Đã tạo {len(chunks_with_meta)} chunks theo cấu trúc Điều khoản.")
+    return chunks_with_meta
 
 # ──────────────────────────────────────────────
-# 6. INGEST: PDF → ChromaDB
+# 6. INGEST: DOCUMENT → ChromaDB
 # ──────────────────────────────────────────────
-def ingest_pdf(pdf_path: str, source_name: Optional[str] = None) -> int:
+def ingest_document(file_path: str, source_name: Optional[str] = None) -> int:
     """
-    Read PDF, chunk, embed, and store in ChromaDB.
-    Returns the number of chunks stored.
+    Cập nhật hàm ingest để dùng hàm đọc và chunking mới.
     """
-    if not os.path.exists(pdf_path):
-        raise FileNotFoundError(f"PDF not found: {pdf_path}")
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Không tìm thấy file: {file_path}")
 
-    source_name = source_name or os.path.basename(pdf_path)
-    raw_text = read_pdf(pdf_path)
-    chunks = chunk_text(raw_text)
+    source_name = source_name or os.path.basename(file_path)
+    raw_text = read_document(file_path)
+    
+    # Gọi hàm chunking mới
+    chunk_dicts = chunk_legal_text(raw_text)
+    
+    # Tách lấy danh sách text để đưa vào mô hình Embedding
+    texts_to_embed = [c["text"] for c in chunk_dicts]
 
-    print(f"[RAG] Embedding {len(chunks)} chunks …")
-    embeddings = embed_texts(chunks)
+    print(f"[RAG] Đang embedding {len(texts_to_embed)} chunks …")
+    embeddings = embed_texts(texts_to_embed)
 
     collection = get_collection()
 
-    # Build IDs & metadata
-    ids = [str(uuid.uuid4()) for _ in chunks]
-    metadatas = [{"source": source_name, "chunk_index": i} for i in range(len(chunks))]
+    ids = [str(uuid.uuid4()) for _ in texts_to_embed]
+    
+    # Nạp thêm metadata article_ref vào ChromaDB
+    metadatas = []
+    for i, c in enumerate(chunk_dicts):
+        meta = {
+            "source": source_name, 
+            "chunk_index": i,
+            "article_ref": c["metadata"]["article_ref"] # Dữ liệu quan trọng để so sánh
+        }
+        metadatas.append(meta)
 
-    # Upsert in batches of 100
     batch_size = 100
-    for i in range(0, len(chunks), batch_size):
+    for i in range(0, len(texts_to_embed), batch_size):
         collection.upsert(
             ids=ids[i : i + batch_size],
-            documents=chunks[i : i + batch_size],
+            documents=texts_to_embed[i : i + batch_size],
             embeddings=embeddings[i : i + batch_size],
             metadatas=metadatas[i : i + batch_size],
         )
 
-    print(f"[RAG] ✅ Stored {len(chunks)} chunks from '{source_name}' into ChromaDB.")
-    return len(chunks)
-
+    print(f"[RAG] ✅ Đã lưu {len(texts_to_embed)} chunks từ '{source_name}' vào ChromaDB.")
+    return len(texts_to_embed)
 
 # ──────────────────────────────────────────────
 # 7. RETRIEVAL
