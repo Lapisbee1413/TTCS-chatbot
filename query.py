@@ -22,7 +22,7 @@ def main():
         help=f"LLM model Ollama sử dụng (mặc định: {QWEN_MODEL})",
     )
     parser.add_argument(
-        "--top-k", "-k", type=int, default=5,
+        "--top-k", "-k", type=int, default=3,
         help="Số lượng chunks liên quan nhất truy vấn từ ChromaDB (mặc định: 5)",
     )
     parser.add_argument(

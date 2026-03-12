@@ -201,8 +201,42 @@ def retrieve(query: str, top_k: int = 5) -> List[dict]:
         hits.append({"text": doc, "metadata": meta, "distance": dist})
     return hits
 
-
-# ──────────────────────────────────────────────
+def retrieve_article_pair(article_name: str, source_v1: str = "HopDong_V1", source_v2: str = "HopDong_V2") -> dict:
+    """
+    Sử dụng Metadata Filtering để rút chính xác một Điều khoản từ 2 phiên bản ra so sánh.
+    """
+    collection = get_collection()
+    
+    # 1. Lọc lấy văn bản của V1
+    results_v1 = collection.get(
+        where={
+            "$and": [
+                {"source": source_v1},
+                {"article_ref": article_name}
+            ]
+        }
+    )
+    
+    # 2. Lọc lấy văn bản của V2
+    results_v2 = collection.get(
+        where={
+            "$and": [
+                {"source": source_v2},
+                {"article_ref": article_name}
+            ]
+        }
+    )
+    
+    # 3. Trích xuất nội dung text (xử lý luôn trường hợp nếu 1 bản không có điều khoản đó)
+    text_v1 = results_v1["documents"][0] if results_v1["documents"] else "Không tìm thấy điều khoản này."
+    text_v2 = results_v2["documents"][0] if results_v2["documents"] else "Không tìm thấy điều khoản này."
+    
+    return {
+        "article_name": article_name,
+        "v1_text": text_v1,
+        "v2_text": text_v2
+    }
+# ──────────────────────────────────────────────    
 # 8. LLM ANSWER GENERATION via Ollama
 # ──────────────────────────────────────────────
 def build_prompt(question: str, context_chunks: List[dict]) -> str:
