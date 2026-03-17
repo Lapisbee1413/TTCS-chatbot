@@ -1,17 +1,11 @@
 ## Cài đặt
 
-### 1. Tạo `.env` chứa các biến môi trường
-```
-discord_bot_token=YOUR_DISCORD_TOKEN
-api_key=YOUR_GEMINI_KEY
-```
-
-### 2. Cài dependencies
+### 1. Cài dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Cài & chạy Ollama (dùng cho RAG Pipeline)
+### 2. Cài & chạy Ollama (dùng cho RAG Pipeline)
 ```bash
 # Cài Ollama: https://ollama.com
 ollama pull qwen2.5:3b
@@ -47,20 +41,12 @@ python query.py "Câu hỏi?" --retrieve-only
 
 ---
 
-## Discord Bot (Gemini)
-
-```bash
-python call.py
-```
-
----
-
 ## Kiến trúc RAG
 
 ```
-PDF file
-  ↓  pypdf (đọc text)
-  ↓  chunk_text() – chia ~500 ký tự, overlap 100
+PDF/DOCX file
+  ↓  pypdf / python-docx (đọc text)
+  ↓  chunk_legal_text() – chia theo cấu trúc "Điều X"
   ↓  sentence-transformers – embed từng chunk
   ↓  ChromaDB (lưu persistent tại ./chroma_db/)
       ↓  query bằng embedding của câu hỏi
