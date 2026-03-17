@@ -290,10 +290,3 @@ def ask_ollama(question: str, model: str = QWEN_MODEL, top_k: int = 5) -> dict:
         answer = f"[Lỗi] {str(e)}"
 
     return {"answer": answer, "model": model, "chunks_used": hits}
-
-
-async def ask_ollama_async(question: str, model: str = QWEN_MODEL, top_k: int = 5) -> dict:
-    """Async wrapper for use with discord bot."""
-    import asyncio
-    loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(None, lambda: ask_ollama(question, model, top_k))
