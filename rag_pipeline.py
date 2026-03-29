@@ -25,7 +25,7 @@ CHUNK_SIZE = 500        # characters per chunk
 CHUNK_OVERLAP = 100     # overlap between consecutive chunks
 
 # Ollama model names (make sure they are pulled: `ollama pull qwen2.5:3b` / `ollama pull mistral`)
-QWEN_MODEL    = "qwen2.5:3b"
+QWEN_MODEL    = "qwen2.5:1.5b"
 MISTRAL_MODEL = "mistral"
 
 # ──────────────────────────────────────────────
@@ -96,36 +96,50 @@ def read_document(file_path: str) -> str:
 # ──────────────────────────────────────────────
 # 5. CHUNKING (Pattern-based Chunking cho Luật)
 # ──────────────────────────────────────────────
-def chunk_legal_text(text: str) -> List[dict]:
+def chunk_legal_text(text: str, min_chunk_size: int = 50) -> List[dict]:
     """
     Chia đoạn dựa trên cấu trúc "Điều X".
     Trả về danh sách dictionary gồm đoạn text và metadata (số Điều).
+
+    Args:
+        text: Văn bản cần chia
+        min_chunk_size: Kích thước tối thiểu của chunk (chars). Chunks nhỏ hơn sẽ bị loại bỏ.
     """
     # Chuẩn hóa khoảng trắng
     text = re.sub(r"\n{3,}", "\n\n", text.strip())
-    
+
     # Biểu thức chính quy (Regex) tìm điểm chia: Bắt đầu bằng chữ "Điều" + Số
     # Phép (?=...) giúp cắt mà không làm mất đi chữ "Điều" ở đầu chunk
     pattern = r"(?i)(?=\bĐiều\s+\d+[\.\:])"
-    
+
     raw_chunks = re.split(pattern, text)
     chunks_with_meta = []
-    
+
     for chunk in raw_chunks:
         chunk = chunk.strip()
-        if not chunk: 
+
+        # Bỏ qua chunks quá ngắn (thường là lỗi format hoặc không có nội dung thật)
+        if len(chunk) < min_chunk_size:
             continue
-            
+
         # Tìm xem chunk này thuộc Điều mấy để gắn vào metadata
         match = re.match(r"(?i)(Điều\s+\d+)", chunk)
         article_ref = match.group(1).title() if match else "Thông tin chung"
-        
+
         chunks_with_meta.append({
             "text": chunk,
             "metadata": {"article_ref": article_ref}
         })
-        
-    print(f"[RAG] Đã tạo {len(chunks_with_meta)} chunks theo cấu trúc Điều khoản.")
+
+    # Cảnh báo nếu không có chunk nào sau khi filter
+    if not chunks_with_meta:
+        print(f"[RAG] [WARNING] Không tìm thấy chunk hợp lệ nào (min_size={min_chunk_size}). Đang giữ lại toàn bộ văn bản.")
+        chunks_with_meta.append({
+            "text": text,
+            "metadata": {"article_ref": "Toàn bộ tài liệu"}
+        })
+
+    print(f"[RAG] Đã tạo {len(chunks_with_meta)} chunks theo cấu trúc Điều khoản (đã lọc chunks < {min_chunk_size} chars).")
     return chunks_with_meta
 
 # ──────────────────────────────────────────────
@@ -236,19 +250,141 @@ def retrieve_article_pair(article_name: str, source_v1: str = "HopDong_V1", sour
         "v1_text": text_v1,
         "v2_text": text_v2
     }
-# ──────────────────────────────────────────────    
+
+def generate_comparison_report(article_name: str, source_v1: str, source_v2: str, model: str = QWEN_MODEL) -> dict:
+    """
+    Sinh báo cáo so sánh 2 phiên bản của cùng một điều khoản.
+    Tuân thủ nguyên tắc: "Không bằng chứng → Không kết luận"
+
+    Returns:
+        dict with keys: article_name, v1_text, v2_text, comparison_report, model, citations
+    """
+    import requests
+
+    # Lấy nội dung 2 phiên bản
+    data = retrieve_article_pair(article_name, source_v1, source_v2)
+
+    v1_text = data['v1_text']
+    v2_text = data['v2_text']
+
+    # Kiểm tra xem có đủ dữ liệu không
+    if "Không tìm thấy" in v1_text and "Không tìm thấy" in v2_text:
+        return {
+            "article_name": article_name,
+            "v1_text": v1_text,
+            "v2_text": v2_text,
+            "comparison_report": "Không tìm thấy điều khoản này trong cả hai phiên bản tài liệu.",
+            "model": model,
+            "citations": []
+        }
+
+    # Xây dựng prompt so sánh
+    prompt = f"""Bạn là trợ lý AI phân tích tài liệu pháp lý. Nhiệm vụ của bạn là SO SÁNH hai phiên bản của cùng một điều khoản.
+
+NGUYÊN TẮC BẮT BUỘC:
+1. CHỈ dựa vào nội dung được cung cấp bên dưới
+2. KHÔNG suy luận, đoán mò hay thêm thắt thông tin không có
+3. TRÍCH DẪN nguồn rõ ràng cho mọi nhận xét
+4. Nếu không tìm thấy sự khác biệt → nói rõ "Không phát hiện sự khác biệt"
+5. Nếu thiếu thông tin → nói rõ "Không đủ thông tin để kết luận"
+
+=== PHIÊN BẢN 1: {source_v1} ===
+{v1_text}
+
+=== PHIÊN BẢN 2: {source_v2} ===
+{v2_text}
+
+=== YÊU CẦU ===
+Hãy tạo báo cáo so sánh theo cấu trúc sau:
+
+**1. NỘI DUNG PHIÊN BẢN 1 ({source_v1})**
+[Tóm tắt ngắn gọn nội dung chính]
+
+**2. NỘI DUNG PHIÊN BẢN 2 ({source_v2})**
+[Tóm tắt ngắn gọn nội dung chính]
+
+**3. ĐIỂM GIỐNG NHAU**
+[Liệt kê các điểm giống nhau. Nếu không có, ghi: "Không phát hiện điểm giống nhau rõ ràng"]
+
+**4. ĐIỂM KHÁC BIỆT**
+[Liệt kê các điểm khác biệt CỤ THỂ với trích dẫn. Nếu không có, ghi: "Không phát hiện sự khác biệt"]
+
+**5. TÓM TẮT THAY ĐỔI**
+[Tóm tắt tổng quan về thay đổi từ V1 sang V2]
+
+Nhớ: Mọi nhận xét phải có căn cứ cụ thể từ văn bản.
+
+=== BÁO CÁO SO SÁNH ==="""
+
+    # Gọi LLM
+    payload = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        "options": {"temperature": 0.2, "num_predict": 1024},
+    }
+
+    try:
+        response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=180)
+        response.raise_for_status()
+        comparison_report = response.json().get("response", "").strip()
+    except requests.exceptions.ConnectionError:
+        comparison_report = (
+            f"[Lỗi] Không thể kết nối tới Ollama. "
+            f"Hãy chắc chắn Ollama đang chạy và model {model} đã được tải."
+        )
+    except Exception as e:
+        comparison_report = f"[Lỗi] {str(e)}"
+
+    # Tạo citations
+    citations = []
+    if "Không tìm thấy" not in v1_text:
+        citations.append({
+            "source": source_v1,
+            "article_ref": article_name,
+            "excerpt": v1_text[:200] + "..." if len(v1_text) > 200 else v1_text
+        })
+    if "Không tìm thấy" not in v2_text:
+        citations.append({
+            "source": source_v2,
+            "article_ref": article_name,
+            "excerpt": v2_text[:200] + "..." if len(v2_text) > 200 else v2_text
+        })
+
+    return {
+        "article_name": article_name,
+        "v1_text": v1_text,
+        "v2_text": v2_text,
+        "comparison_report": comparison_report,
+        "model": model,
+        "citations": citations
+    }
+
+# ──────────────────────────────────────────────
 # 8. LLM ANSWER GENERATION via Ollama
 # ──────────────────────────────────────────────
 def build_prompt(question: str, context_chunks: List[dict]) -> str:
-    context_text = "\n\n---\n\n".join(
-        [f"[Chunk {i+1}] {c['text']}" for i, c in enumerate(context_chunks)]
-    )
+    """Build prompt with metadata for citation"""
+    context_parts = []
+    for i, c in enumerate(context_chunks):
+        source = c['metadata'].get('source', 'Unknown')
+        article = c['metadata'].get('article_ref', 'Unknown')
+        context_parts.append(
+            f"[Chunk {i+1} - Nguồn: {source}, {article}]\n{c['text']}"
+        )
+    context_text = "\n\n---\n\n".join(context_parts)
+
     prompt = (
-        "Bạn là trợ lý AI thông minh. Hãy trả lời câu hỏi dựa trên ngữ cảnh được cung cấp.\n"
-        "Nếu ngữ cảnh không đủ thông tin, hãy nói rõ điều đó.\n\n"
+        "Bạn là trợ lý AI phân tích tài liệu pháp lý. Hãy tuân thủ các nguyên tắc sau:\n\n"
+        "NGUYÊN TẮC BẮT BUỘC:\n"
+        "1. CHỈ trả lời dựa trên ngữ cảnh được cung cấp bên dưới\n"
+        "2. KHÔNG sử dụng kiến thức bên ngoài hoặc suy luận không có căn cứ\n"
+        "3. Sau mỗi thông tin, PHẢI trích dẫn nguồn theo format: [Nguồn: <tên_nguồn>, <điều_khoản>]\n"
+        "4. Nếu không tìm thấy thông tin trong ngữ cảnh → nói rõ 'Không tìm thấy thông tin trong tài liệu được cung cấp'\n"
+        "5. Không đoán mò, diễn giải hay bổ sung thông tin không có trong ngữ cảnh\n\n"
         f"=== NGỮ CẢNH ===\n{context_text}\n\n"
         f"=== CÂU HỎI ===\n{question}\n\n"
-        "=== TRẢ LỜI ==="
+        "=== TRẢ LỜI (nhớ trích dẫn nguồn sau mỗi thông tin) ==="
     )
     return prompt
 
@@ -259,13 +395,18 @@ def ask_ollama(question: str, model: str = QWEN_MODEL, top_k: int = 5) -> dict:
       1. Retrieve top_k relevant chunks from ChromaDB
       2. Build prompt
       3. Call Ollama LLM
-    Returns dict with keys: answer, model, chunks_used
+    Returns dict with keys: answer, model, chunks_used, citations
     """
     import requests
 
     hits = retrieve(question, top_k=top_k)
     if not hits:
-        return {"answer": "Không tìm thấy thông tin liên quan trong cơ sở dữ liệu.", "model": model, "chunks_used": []}
+        return {
+            "answer": "Không tìm thấy thông tin liên quan trong cơ sở dữ liệu.",
+            "model": model,
+            "chunks_used": [],
+            "citations": []
+        }
 
     prompt = build_prompt(question, hits)
 
@@ -289,4 +430,27 @@ def ask_ollama(question: str, model: str = QWEN_MODEL, top_k: int = 5) -> dict:
     except Exception as e:
         answer = f"[Lỗi] {str(e)}"
 
-    return {"answer": answer, "model": model, "chunks_used": hits}
+
+    # Extract citations from chunks used
+    citations = []
+    for chunk in hits:
+        citations.append({
+            "source": chunk['metadata'].get('source', 'Unknown'),
+            "article_ref": chunk['metadata'].get('article_ref', 'Unknown'),
+            "excerpt": chunk['text'][:150] + "..." if len(chunk['text']) > 150 else chunk['text']
+        })
+
+    return {
+        "answer": answer,
+        "model": model,
+        "chunks_used": hits,
+        "citations": citations
+    }
+
+
+async def ask_ollama_async(question: str, model: str = QWEN_MODEL, top_k: int = 5) -> dict:
+    """Async wrapper for use with discord bot."""
+    import asyncio
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, lambda: ask_ollama(question, model, top_k))
+

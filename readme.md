@@ -39,6 +39,33 @@ python query.py "Câu hỏi?" --show-chunks
 python query.py "Câu hỏi?" --retrieve-only
 ```
 
+**Lưu ý:**
+- Câu trả lời LLM sẽ tự động **trích dẫn nguồn** (source + article_ref)
+- LLM được hướng dẫn tuân thủ nguyên tắc **"không bằng chứng → không kết luận"**
+- Nếu không tìm thấy thông tin, LLM sẽ nói rõ thay vì đoán mò
+
+---
+
+## So sánh 2 phiên bản tài liệu (với Citation)
+
+### Sử dụng compare.py
+```bash
+# So sánh Điều 5 giữa 2 phiên bản
+python compare.py "Điều 5" --v1 "PhuLuc_V1" --v2 "PhuLuc_V2"
+
+# Hiển thị full text + citations
+python compare.py "Điều 5" --v1 "HopDong_V1" --v2 "HopDong_V2" --show-full-text --show-citations
+
+# Dùng model Mistral
+python compare.py "Điều 3" --v1 "V1" --v2 "V2" --model mistral
+```
+
+**Đặc điểm:**
+-  Tự động trích dẫn nguồn (citation) cho mọi thông tin
+-  Nguyên tắc "Không bằng chứng → Không kết luận"
+-  Báo cáo có cấu trúc: Nội dung V1/V2, Điểm giống/khác, Tóm tắt thay đổi
+-  Không suy luận hay bổ sung thông tin không có trong văn bản gốc
+
 ---
 
 ## Kiến trúc RAG

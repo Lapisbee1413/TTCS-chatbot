@@ -7,7 +7,13 @@ Usage:
     python query.py "Câu hỏi?" --model qwen2.5:3b --top-k 3 --show-chunks
 """
 
+import sys
 import argparse
+
+# Fix encoding for Windows console
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 from rag_pipeline import ask_ollama, retrieve, QWEN_MODEL, MISTRAL_MODEL
 
 
