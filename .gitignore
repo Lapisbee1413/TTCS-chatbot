@@ -1,3 +1,51 @@
+# Python
 .env
 __pycache__/
 .venv/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# ChromaDB (generated data)
+chroma_db/
+
+# Backend API
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/**/__pycache__/
+backend/temp_uploads/
+backend/*.pyc
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.vite/
+
+# Test files (optional - remove this if you want to commit test docs)
+# test_documents/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

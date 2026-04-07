@@ -1,52 +1,98 @@
-## Cài đặt
+# 📚 RAG Legal Chatbot
 
-### 1. Cài dependencies
+> AI-powered legal document analysis with citation support
+
+**Quick Start:** [Installation](#-quick-start) | [Usage](#-usage) | [Full Docs →](Report/README_FULL.md)
+
+---
+
+## 🚀 Quick Start
+
 ```bash
+# 1. Install Ollama & models
+ollama pull qwen2.5:1.5b
+ollama serve
+
+# 2. Install dependencies
 pip install -r requirements.txt
+cd backend && pip install -r requirements.txt && cd ..
+cd frontend && npm install && cd ..
+
+# 3. Start application
+start_backend.bat   # Terminal 1
+start_frontend.bat  # Terminal 2
 ```
 
-### 2. Cài & chạy Ollama (dùng cho RAG Pipeline)
-```bash
-# Cài Ollama: https://ollama.com
-ollama pull qwen2.5:3b
-ollama pull mistral
-ollama serve          # giữ terminal này chạy nền
+**Access:**
+- 🌐 Frontend: http://localhost:5173
+- 🔧 Backend API: http://localhost:8000/docs
+
+---
+
+## ✨ Features
+
+- 📤 **Upload** PDF/DOCX documents
+- 💬 **Chat** with citation support
+- 🔄 **Compare** document versions
+- 📊 **Parallel View** with synchronized scrolling
+- 🎯 **Evidence-based** answering
+
+---
+
+## 📁 Project Structure
+
+```
+TTCS-chatbot/
+├── backend/           # FastAPI REST API
+├── frontend/          # React + Material-UI
+├── Report/            # 📝 All documentation
+│   ├── README_FULL.md
+│   ├── USER_GUIDE.md
+│   └── PROGRESS_W9.md
+├── test_documents/    # 📄 Sample files
+├── rag_pipeline.py    # Core RAG logic
+└── readme.md          # This file
 ```
 
 ---
 
-## RAG Pipeline – PDF → ChromaDB → Qwen / Mistral
+## 📖 Documentation
 
-### Bước 1 – Đọc & nạp file PDF vào ChromaDB
-```bash
-python ingest.py path/to/document.pdf
-# Tuỳ chọn:
-python ingest.py doc.pdf --source "Tên tài liệu" --chunk-size 600 --overlap 120
-```
-
-### Bước 2 – Đặt câu hỏi (RAG)
-```bash
-# Dùng Qwen 2.5 (mặc định)
-python query.py "Nội dung chính của tài liệu là gì?"
-
-# Dùng Mistral 7B
-python query.py "Tóm tắt tài liệu" --model mistral
-
-# Xem chunks ChromaDB tìm được
-python query.py "Câu hỏi?" --show-chunks
-
-# Chỉ tìm chunks, không gọi LLM
-python query.py "Câu hỏi?" --retrieve-only
-```
-
-**Lưu ý:**
-- Câu trả lời LLM sẽ tự động **trích dẫn nguồn** (source + article_ref)
-- LLM được hướng dẫn tuân thủ nguyên tắc **"không bằng chứng → không kết luận"**
-- Nếu không tìm thấy thông tin, LLM sẽ nói rõ thay vì đoán mò
+- **[Full Documentation →](Report/README_FULL.md)** - Complete guide
+- **[User Guide →](Report/USER_GUIDE.md)** - How to use
+- **[Progress Report →](Report/PROGRESS_W9.md)** - Week 9 status
 
 ---
 
-## So sánh 2 phiên bản tài liệu (với Citation)
+## 🛠️ Tech Stack
+
+**Backend:** FastAPI, ChromaDB, Ollama  
+**Frontend:** React, Material-UI, Vite  
+**Models:** Qwen 2.5, Mistral
+
+---
+
+## 🧪 Testing
+
+```bash
+# Backend API tests
+cd backend && python test_api.py
+
+# Integration tests
+node integration_test.js
+```
+
+---
+
+## 📊 Status
+
+✅ **Week 9 Complete** (100%) - Ready for demo!
+
+---
+
+**For detailed information, see [Report/](Report/) folder.**
+
+
 
 ### Sử dụng compare.py
 ```bash
