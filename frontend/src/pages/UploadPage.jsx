@@ -9,8 +9,18 @@ import {
   Alert,
   CircularProgress,
   LinearProgress,
+  Chip,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material'
-import { CloudUpload } from '@mui/icons-material'
+import {
+  CloudUpload,
+  CheckCircle as CheckIcon,
+  Warning as WarnIcon,
+  Cancel as FailIcon,
+} from '@mui/icons-material'
 import { uploadDocument } from '../api/client'
 
 export default function UploadPage() {
@@ -19,12 +29,15 @@ export default function UploadPage() {
   const [uploading, setUploading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
+  const [qualityReject, setQualityReject] = useState(null) // Validation rejection details
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0]
     if (selectedFile) {
       setFile(selectedFile)
       setError(null)
+      setQualityReject(null)
+      setResult(null)
       // Auto-fill source name from filename
       if (!sourceName) {
         setSourceName(selectedFile.name.replace(/\.[^/.]+$/, ''))
@@ -32,7 +45,7 @@ export default function UploadPage() {
     }
   }
 
-  const handleUpload = async () => {
+  const handleUpload = async (forceUpload = false) => {
     if (!file) {
       setError('Please select a file')
       return
@@ -53,17 +66,39 @@ export default function UploadPage() {
     setUploading(true)
     setError(null)
     setResult(null)
+    setQualityReject(null)
 
     try {
-      const response = await uploadDocument(file, sourceName || null)
+      const response = await uploadDocument(file, sourceName || null, forceUpload)
       setResult(response)
       setFile(null)
       setSourceName('')
     } catch (err) {
-      setError(err.response?.data?.detail || err.message || 'Upload failed')
+      // Check if this is a quality validation rejection (422)
+      const detail = err.response?.data?.detail
+      if (detail && typeof detail === 'object' && detail.quality) {
+        setQualityReject(detail)
+      } else {
+        setError(typeof detail === 'string' ? detail : detail?.message || err.message || 'Upload failed')
+      }
     } finally {
       setUploading(false)
     }
+  }
+
+  const getQualityColor = (quality) => {
+    switch (quality) {
+      case 'HIGH': return 'success'
+      case 'MEDIUM': return 'warning'
+      case 'LOW': return 'error'
+      default: return 'default'
+    }
+  }
+
+  const getCheckIcon = (score) => {
+    if (score >= 70) return <CheckIcon color="success" fontSize="small" />
+    if (score >= 40) return <WarnIcon color="warning" fontSize="small" />
+    return <FailIcon color="error" fontSize="small" />
   }
 
   return (
@@ -73,7 +108,7 @@ export default function UploadPage() {
           Upload Document
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
-          Upload a PDF or DOCX legal document to add it to the knowledge base
+          Upload a PDF or DOCX legal document. Documents are automatically validated for quality before being added to the knowledge base.
         </Typography>
 
         <Box sx={{ mt: 3 }}>
@@ -108,12 +143,12 @@ export default function UploadPage() {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleUpload}
+            onClick={() => handleUpload(false)}
             disabled={!file || uploading}
             fullWidth
             sx={{ mt: 2 }}
           >
-            {uploading ? 'Uploading...' : 'Upload'}
+            {uploading ? 'Uploading & Validating...' : 'Upload & Validate'}
           </Button>
 
           {uploading && <LinearProgress sx={{ mt: 2 }} />}
@@ -124,18 +159,81 @@ export default function UploadPage() {
             </Alert>
           )}
 
-          {result && (
-            <Alert severity="success" sx={{ mt: 2 }}>
-              <Typography variant="body1">
-                <strong>Success!</strong> {result.message}
+          {/* Quality Rejection Alert */}
+          {qualityReject && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              <Typography variant="body1" gutterBottom>
+                <strong>❌ Tài liệu bị từ chối</strong> — Chất lượng{' '}
+                <Chip
+                  label={`${qualityReject.quality} (${qualityReject.score}/100)`}
+                  color="error"
+                  size="small"
+                />
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" gutterBottom>
+                {qualityReject.message}
+              </Typography>
+
+              {qualityReject.checks && (
+                <List dense sx={{ mt: 1 }}>
+                  {qualityReject.checks.map((check, idx) => (
+                    <ListItem key={idx} sx={{ py: 0 }}>
+                      <ListItemIcon sx={{ minWidth: 32 }}>
+                        {getCheckIcon(check.score)}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`${check.name}: ${check.score}/100`}
+                        secondary={check.reason}
+                        primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
+                        secondaryTypographyProps={{ variant: 'caption' }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+
+              <Button
+                variant="outlined"
+                color="warning"
+                size="small"
+                sx={{ mt: 1 }}
+                onClick={() => handleUpload(true)}
+                disabled={uploading}
+              >
+                ⚠️ Force Upload (bỏ qua kiểm tra)
+              </Button>
+            </Alert>
+          )}
+
+          {/* Success Result */}
+          {result && (
+            <Alert
+              severity={result.quality === 'MEDIUM' ? 'warning' : 'success'}
+              sx={{ mt: 2 }}
+            >
+              <Typography variant="body1">
+                <strong>{result.forced ? '⚠️ Upload thành công (forced)' : '✅ Upload thành công!'}</strong>{' '}
+                {result.message}
+              </Typography>
+              <Typography variant="body2" sx={{ mt: 1 }}>
                 Document: {result.document_name}
                 <br />
                 Source: {result.source_name}
                 <br />
                 Chunks created: {result.num_chunks}
+                <br />
+                Quality:{' '}
+                <Chip
+                  label={`${result.quality} (${result.quality_score}/100)`}
+                  color={getQualityColor(result.quality)}
+                  size="small"
+                />
               </Typography>
+              {result.quality_summary && (
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  {result.quality_summary}
+                </Typography>
+              )}
             </Alert>
           )}
         </Box>
@@ -143,3 +241,4 @@ export default function UploadPage() {
     </Container>
   )
 }
+

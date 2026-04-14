@@ -14,6 +14,10 @@ class UploadResponse(BaseModel):
     document_name: str
     source_name: str
     num_chunks: int
+    quality: str = "UNKNOWN"
+    quality_score: int = 0
+    quality_summary: str = ""
+    forced: bool = False
 
 
 # ──────────────────────────────────────────────

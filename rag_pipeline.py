@@ -145,17 +145,50 @@ def chunk_legal_text(text: str, min_chunk_size: int = 50) -> List[dict]:
 # ──────────────────────────────────────────────
 # 6. INGEST: DOCUMENT → ChromaDB
 # ──────────────────────────────────────────────
-def ingest_document(file_path: str, source_name: Optional[str] = None) -> int:
+def ingest_document(file_path: str, source_name: Optional[str] = None, force: bool = False) -> dict:
     """
-    Cập nhật hàm ingest để dùng hàm đọc và chunking mới.
+    Đọc tài liệu, validate chất lượng, chunking và lưu vào ChromaDB.
+    
+    Args:
+        file_path: Đường dẫn tới file PDF/DOCX
+        source_name: Tên nguồn (mặc định = tên file)
+        force: Nếu True, bỏ qua validation (vẫn ingest cả tài liệu LOW quality)
+    
+    Returns:
+        dict: {
+            "num_chunks": int,
+            "validation": {...},   # Kết quả validation
+            "forced": bool,        # True nếu bị force qua validation
+        }
     """
+    from document_validator import validate_legal_document, format_validation_report
+
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Không tìm thấy file: {file_path}")
 
     source_name = source_name or os.path.basename(file_path)
     raw_text = read_document(file_path)
     
-    # Gọi hàm chunking mới
+    # ── VALIDATION STEP ──
+    validation = validate_legal_document(raw_text)
+    quality = validation["quality"]
+    score = validation["score"]
+    
+    print(format_validation_report(validation))
+    
+    if quality == "LOW" and not force:
+        raise ValueError(
+            f"Tài liệu không đạt chất lượng (score={score}/100, quality={quality}). "
+            f"Lý do: {validation['summary']}. "
+            f"Sử dụng --force để bỏ qua kiểm tra."
+        )
+    
+    if quality == "MEDIUM":
+        print(f"[RAG] ⚠️ CẢNH BÁO: Tài liệu chất lượng TRUNG BÌNH (score={score}/100).")
+        print(f"[RAG]    {validation['summary']}")
+        print(f"[RAG]    Tiếp tục ingest nhưng kết quả có thể không chính xác.")
+    
+    # ── CHUNKING ──
     chunk_dicts = chunk_legal_text(raw_text)
     
     # Tách lấy danh sách text để đưa vào mô hình Embedding
@@ -168,13 +201,15 @@ def ingest_document(file_path: str, source_name: Optional[str] = None) -> int:
 
     ids = [str(uuid.uuid4()) for _ in texts_to_embed]
     
-    # Nạp thêm metadata article_ref vào ChromaDB
+    # Nạp thêm metadata article_ref + quality vào ChromaDB
     metadatas = []
     for i, c in enumerate(chunk_dicts):
         meta = {
             "source": source_name, 
             "chunk_index": i,
-            "article_ref": c["metadata"]["article_ref"] # Dữ liệu quan trọng để so sánh
+            "article_ref": c["metadata"]["article_ref"],  # Dữ liệu quan trọng để so sánh
+            "doc_quality": quality,                         # Chất lượng tài liệu
+            "doc_quality_score": score,                     # Điểm chất lượng
         }
         metadatas.append(meta)
 
@@ -188,7 +223,11 @@ def ingest_document(file_path: str, source_name: Optional[str] = None) -> int:
         )
 
     print(f"[RAG] ✅ Đã lưu {len(texts_to_embed)} chunks từ '{source_name}' vào ChromaDB.")
-    return len(texts_to_embed)
+    return {
+        "num_chunks": len(texts_to_embed),
+        "validation": validation,
+        "forced": quality == "LOW" and force,
+    }
 
 # ──────────────────────────────────────────────
 # 7. RETRIEVAL

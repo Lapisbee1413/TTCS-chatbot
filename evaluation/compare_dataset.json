@@ -1,0 +1,126 @@
+[
+  {
+    "id": "C001",
+    "article_name": "Điều 3",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh giá thuê và thanh toán",
+    "expected_changes": [
+      {"type": "modified", "field": "Giá thuê", "v1": "5.000.000 VNĐ/tháng", "v2": "6.000.000 VNĐ/tháng"},
+      {"type": "modified", "field": "Tiền cọc", "v1": "10.000.000 VNĐ", "v2": "12.000.000 VNĐ"},
+      {"type": "modified", "field": "Ngày thanh toán", "v1": "ngày 05 hàng tháng", "v2": "ngày 01 hàng tháng"},
+      {"type": "added", "field": "Chi phí dịch vụ", "v1": null, "v2": "500.000 VNĐ/tháng"},
+      {"type": "modified", "field": "Điều khoản tăng giá", "v1": "Không tăng giá trong toàn bộ hợp đồng", "v2": "Không tăng giá trong 12 tháng đầu"}
+    ]
+  },
+  {
+    "id": "C002",
+    "article_name": "Điều 4",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh thời hạn hợp đồng",
+    "expected_changes": [
+      {"type": "modified", "field": "Thời hạn", "v1": "12 tháng", "v2": "24 tháng"},
+      {"type": "modified", "field": "Ngày kết thúc", "v1": "31/01/2025", "v2": "31/01/2026"}
+    ]
+  },
+  {
+    "id": "C003",
+    "article_name": "Điều 2",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh nội thất",
+    "expected_changes": [
+      {"type": "modified", "field": "Nội thất", "v1": "Nội thất cơ bản", "v2": "Nội thất cao cấp (tủ lạnh, máy giặt, điều hòa)"}
+    ]
+  },
+  {
+    "id": "C004",
+    "article_name": "Điều 5",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh trách nhiệm bên A",
+    "expected_changes": [
+      {"type": "added", "field": "Sửa chữa", "v1": null, "v2": "Bên A chịu trách nhiệm sửa chữa hư hỏng lớn"}
+    ]
+  },
+  {
+    "id": "C005",
+    "article_name": "Điều 6",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh trách nhiệm bên B",
+    "expected_changes": [
+      {"type": "added", "field": "Bảo hiểm", "v1": null, "v2": "Bên B phải mua bảo hiểm cháy nổ"}
+    ]
+  },
+  {
+    "id": "C006",
+    "article_name": "Điều 7",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh điều khoản chấm dứt hợp đồng",
+    "expected_changes": [
+      {"type": "added", "field": "Chấm dứt sớm", "v1": null, "v2": "Được phép chấm dứt sớm nếu báo trước 2 tháng"}
+    ]
+  },
+  {
+    "id": "C007",
+    "article_name": "Điều 3",
+    "source_v1": "HopDong_V1",
+    "source_v2": "HopDong_V2",
+    "description": "So sánh giá trị hợp đồng gốc V1 vs V2",
+    "expected_changes": [
+      {"type": "modified", "field": "Giá trị hợp đồng", "v1": "Giá trị theo V1", "v2": "Giá trị theo V2 (có thay đổi)"}
+    ]
+  },
+  {
+    "id": "C008",
+    "article_name": "Điều 5",
+    "source_v1": "HopDong_V1",
+    "source_v2": "HopDong_V2",
+    "description": "So sánh trách nhiệm các bên trong hợp đồng gốc",
+    "expected_changes": [
+      {"type": "modified", "field": "Trách nhiệm", "v1": "Theo V1", "v2": "Theo V2 (có bổ sung)"}
+    ]
+  },
+  {
+    "id": "C009",
+    "article_name": "Điều 3",
+    "source_v1": "PhuLuc_V1",
+    "source_v2": "PhuLuc_V2",
+    "description": "So sánh phụ lục kho V1 vs V2",
+    "expected_changes": [
+      {"type": "modified", "field": "Quy định kho", "v1": "Theo phụ lục V1", "v2": "Theo phụ lục V2 (có thay đổi)"}
+    ]
+  },
+  {
+    "id": "C010",
+    "article_name": "Điều 5",
+    "source_v1": "PhuLuc_V1",
+    "source_v2": "PhuLuc_V2",
+    "description": "So sánh quy định trong phụ lục kho",
+    "expected_changes": [
+      {"type": "modified", "field": "Điều khoản kho", "v1": "Theo phụ lục V1", "v2": "Theo phụ lục V2 (có sửa đổi)"}
+    ]
+  },
+  {
+    "id": "C011",
+    "article_name": "Điều 1",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh thông tin nhà cho thuê",
+    "expected_changes": [
+      {"type": "same", "field": "Địa chỉ", "v1": "Giữ nguyên", "v2": "Giữ nguyên"},
+      {"type": "same", "field": "Diện tích", "v1": "50m²", "v2": "50m²"}
+    ]
+  },
+  {
+    "id": "C012",
+    "article_name": "Điều 10",
+    "source_v1": "ThueNha_V1",
+    "source_v2": "ThueNha_V2",
+    "description": "So sánh điều khoản không tồn tại",
+    "expected_changes": []
+  }
+]

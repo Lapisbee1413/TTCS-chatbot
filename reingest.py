@@ -51,8 +51,10 @@ def clean_and_reingest():
 
         try:
             print(f"\n[*] Ingesting: {file_path} -> source: {source_name}")
-            num_chunks = ingest_document(file_path, source_name=source_name)
-            print(f"    => OK: {num_chunks} chunks")
+            result = ingest_document(file_path, source_name=source_name, force=True)
+            num_chunks = result["num_chunks"]
+            quality = result["validation"]["quality"]
+            print(f"    => OK: {num_chunks} chunks (quality={quality})")
             success_count += 1
         except Exception as e:
             print(f"    => [X] LOI: {e}")

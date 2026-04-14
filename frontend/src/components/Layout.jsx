@@ -17,6 +17,7 @@ import {
   Chat as ChatIcon,
   CompareArrows as CompareIcon,
   ViewWeek as ParallelIcon,
+  Folder as FolderIcon,
 } from '@mui/icons-material'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ const menuItems = [
   { text: 'Chat', path: '/chat', icon: <ChatIcon /> },
   { text: 'Parallel View', path: '/parallel', icon: <ParallelIcon /> },
   { text: 'Compare', path: '/compare', icon: <CompareIcon /> },
+  { text: 'Documents', path: '/documents', icon: <FolderIcon /> },
 ]
 
 export default function Layout() {

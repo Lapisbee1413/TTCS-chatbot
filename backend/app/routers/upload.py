@@ -1,5 +1,5 @@
 """
-Upload Router - Handle document upload
+Upload Router - Handle document upload with quality validation
 """
 import sys
 import os
@@ -8,7 +8,8 @@ from fastapi.responses import JSONResponse
 
 # Add parent directory to path to import rag_pipeline
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
-from rag_pipeline import ingest_document
+from rag_pipeline import ingest_document, read_document
+from document_validator import validate_legal_document
 
 from app.models.schemas import UploadResponse
 
@@ -18,13 +19,15 @@ router = APIRouter()
 @router.post("/upload", response_model=UploadResponse)
 async def upload_document(
     file: UploadFile = File(...),
-    source: str = Form(None)
+    source: str = Form(None),
+    force: bool = Form(False)
 ):
     """
     Upload a PDF or DOCX document and ingest it into ChromaDB
     
     - **file**: PDF or DOCX file to upload
     - **source**: Optional source name (defaults to filename without extension)
+    - **force**: If true, bypass quality validation (still ingest LOW quality docs)
     """
     try:
         # Validate file type
@@ -48,21 +51,51 @@ async def upload_document(
         if not source:
             source = os.path.splitext(file.filename)[0]
         
-        # Ingest document using existing RAG pipeline
-        num_chunks = ingest_document(temp_file_path, source_name=source)
+        # Ingest document (includes validation)
+        try:
+            result = ingest_document(temp_file_path, source_name=source, force=force)
+        except ValueError as ve:
+            # Validation failed — return quality info with rejection
+            # Read the text to get validation details for the response
+            raw_text = read_document(temp_file_path)
+            validation = validate_legal_document(raw_text)
+            os.remove(temp_file_path)
+            
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "message": str(ve),
+                    "quality": validation["quality"],
+                    "score": validation["score"],
+                    "checks": [
+                        {"name": c["label"], "score": c["score"], "reason": c["reason"]}
+                        for c in validation["checks"]
+                    ],
+                    "hint": "Sử dụng force=true để bỏ qua kiểm tra chất lượng"
+                }
+            )
         
         # Clean up temp file
         os.remove(temp_file_path)
+        
+        validation = result.get("validation", {})
         
         return UploadResponse(
             success=True,
             message=f"Document uploaded and processed successfully",
             document_name=file.filename,
             source_name=source,
-            num_chunks=num_chunks
+            num_chunks=result["num_chunks"],
+            quality=validation.get("quality", "UNKNOWN"),
+            quality_score=validation.get("score", 0),
+            quality_summary=validation.get("summary", ""),
+            forced=result.get("forced", False),
         )
     
+    except HTTPException:
+        raise
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
+

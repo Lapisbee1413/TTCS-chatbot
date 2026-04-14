@@ -1,0 +1,407 @@
+[
+  {
+    "id": "Q001",
+    "category": "factual",
+    "question": "Giá thuê nhà là bao nhiêu?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Giá thuê là 5.000.000 VNĐ/tháng",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q002",
+    "category": "factual",
+    "question": "Thời hạn hợp đồng thuê nhà là bao lâu?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 4",
+    "expected_answer": "Thời hạn hợp đồng là 12 tháng, từ ngày 01/02/2024 đến ngày 31/01/2025",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q003",
+    "category": "factual",
+    "question": "Tiền cọc thuê nhà là bao nhiêu?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Tiền cọc là 10.000.000 VNĐ",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q004",
+    "category": "factual",
+    "question": "Diện tích nhà cho thuê là bao nhiêu?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 1",
+    "expected_answer": "Diện tích là 50m²",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q005",
+    "category": "factual",
+    "question": "Ngày thanh toán tiền thuê hàng tháng là ngày nào?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Thanh toán vào ngày 05 hàng tháng",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q006",
+    "category": "factual",
+    "question": "SLA của hợp đồng bảo trì là bao nhiêu phần trăm?",
+    "source_docs": ["DichVu_BaoTri"],
+    "expected_article": "Điều 4",
+    "expected_answer": "SLA cam kết uptime 99.5%",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q007",
+    "category": "factual",
+    "question": "Thời gian phản hồi sự cố khẩn cấp là bao lâu?",
+    "source_docs": ["DichVu_BaoTri"],
+    "expected_article": "Điều 4",
+    "expected_answer": "Thời gian phản hồi sự cố khẩn cấp là 1 giờ",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q008",
+    "category": "factual",
+    "question": "Giá trị hợp đồng bảo trì là bao nhiêu mỗi năm?",
+    "source_docs": ["DichVu_BaoTri"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Giá trị hợp đồng là 120.000.000 VNĐ/năm, thanh toán 30.000.000 VNĐ/quý",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q009",
+    "category": "factual",
+    "question": "Lương của lập trình viên Frontend là bao nhiêu?",
+    "source_docs": ["LaoDong"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Lương là 15.000.000 VNĐ/tháng, thử việc 85% tương đương 12.750.000 VNĐ",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q010",
+    "category": "factual",
+    "question": "Thời gian thử việc là bao lâu?",
+    "source_docs": ["LaoDong"],
+    "expected_article": "Điều 4",
+    "expected_answer": "Thời gian thử việc là 60 ngày",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q011",
+    "category": "factual",
+    "question": "Có những phụ cấp gì trong hợp đồng lao động?",
+    "source_docs": ["LaoDong"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Phụ cấp ăn trưa 1.000.000 VNĐ, xăng xe 500.000 VNĐ, điện thoại 300.000 VNĐ",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q012",
+    "category": "factual",
+    "question": "Giờ làm việc là từ mấy giờ đến mấy giờ?",
+    "source_docs": ["LaoDong"],
+    "expected_article": "Điều 5",
+    "expected_answer": "Giờ làm việc từ 8:00 đến 17:00, nghỉ trưa từ 12:00 đến 13:00",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q013",
+    "category": "factual",
+    "question": "Thời gian bảo hành thiết bị là bao lâu?",
+    "source_docs": ["MuaBan_ThietBi"],
+    "expected_article": "Điều 5",
+    "expected_answer": "Bảo hành 24 tháng",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q014",
+    "category": "factual",
+    "question": "Thanh toán mua thiết bị được chia thành mấy đợt?",
+    "source_docs": ["MuaBan_ThietBi"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Thanh toán chia 3 đợt: 30% ký hợp đồng, 60% giao hàng, 10% nghiệm thu",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q015",
+    "category": "factual",
+    "question": "Tổng giá trị hợp đồng mua bán thiết bị là bao nhiêu?",
+    "source_docs": ["MuaBan_ThietBi"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Tổng giá trị là 220.000.000 VNĐ bao gồm VAT",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q016",
+    "category": "factual",
+    "question": "Điều 3 trong hợp đồng V1 quy định gì?",
+    "source_docs": ["HopDong_V1"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Điều 3 quy định về giá trị hợp đồng và phương thức thanh toán",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q017",
+    "category": "factual",
+    "question": "Nội thất trong hợp đồng thuê nhà V1 bao gồm những gì?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 2",
+    "expected_answer": "Nội thất cơ bản",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q018",
+    "category": "factual",
+    "question": "Số ngày nghỉ phép hàng năm là bao nhiêu?",
+    "source_docs": ["LaoDong"],
+    "expected_article": "Điều 5",
+    "expected_answer": "12 ngày phép mỗi năm",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q019",
+    "category": "multi_article",
+    "question": "Trách nhiệm và quyền lợi của bên B trong hợp đồng thuê nhà V1 là gì?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 6",
+    "expected_answer": "Bên B có trách nhiệm thanh toán đúng hạn, giữ gìn tài sản, không được tự ý sửa chữa. Quyền lợi: được sử dụng nhà đúng mục đích.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q020",
+    "category": "multi_article",
+    "question": "Trách nhiệm của bên A trong hợp đồng thuê nhà là gì?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": "Điều 5",
+    "expected_answer": "Bên A có trách nhiệm bàn giao nhà đúng tình trạng, đảm bảo quyền sử dụng hợp pháp cho bên B",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q021",
+    "category": "multi_article",
+    "question": "Dịch vụ bảo trì bao gồm những gì?",
+    "source_docs": ["DichVu_BaoTri"],
+    "expected_article": "Điều 2",
+    "expected_answer": "Bảo trì server, backup dữ liệu, bảo mật hệ thống, hỗ trợ kỹ thuật 24/7",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q022",
+    "category": "multi_article",
+    "question": "Nếu uptime chỉ đạt 96% thì có vi phạm SLA không và bị phạt thế nào?",
+    "source_docs": ["DichVu_BaoTri"],
+    "expected_article": "Điều 4",
+    "expected_answer": "Có vi phạm SLA vì cam kết là 99.5%. Vi phạm SLA sẽ bị phạt theo quy định trong hợp đồng.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q023",
+    "category": "multi_article",
+    "question": "Liệt kê các thiết bị được mua trong hợp đồng mua bán thiết bị",
+    "source_docs": ["MuaBan_ThietBi"],
+    "expected_article": "Điều 2",
+    "expected_answer": "5 thiết bị công nghiệp được liệt kê trong bảng danh sách thiết bị",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q024",
+    "category": "cross_document",
+    "question": "Hợp đồng nào có giá trị lớn nhất?",
+    "source_docs": ["ThueNha_V1", "DichVu_BaoTri", "MuaBan_ThietBi", "LaoDong"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Hợp đồng mua bán thiết bị có giá trị lớn nhất: 220.000.000 VNĐ",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q025",
+    "category": "cross_document",
+    "question": "Tài liệu nào có quy định về bảo hành?",
+    "source_docs": ["MuaBan_ThietBi"],
+    "expected_article": "Điều 5",
+    "expected_answer": "Hợp đồng mua bán thiết bị có điều khoản bảo hành 24 tháng",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q026",
+    "category": "cross_document",
+    "question": "So sánh phương thức thanh toán giữa các hợp đồng",
+    "source_docs": ["ThueNha_V1", "DichVu_BaoTri", "MuaBan_ThietBi"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Thuê nhà: thanh toán hàng tháng ngày 05. Bảo trì: thanh toán hàng quý 30M/quý. Mua bán: 3 đợt (30%-60%-10%)",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q027",
+    "category": "cross_document",
+    "question": "Hợp đồng nào có thời hạn dài nhất?",
+    "source_docs": ["ThueNha_V1", "LaoDong", "DichVu_BaoTri"],
+    "expected_article": "Điều 4",
+    "expected_answer": "Hợp đồng lao động có thời hạn 24 tháng, dài nhất trong các hợp đồng",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q028",
+    "category": "unanswerable",
+    "question": "Thuế VAT trong hợp đồng thuê nhà là bao nhiêu phần trăm?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin về thuế VAT trong tài liệu được cung cấp",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q029",
+    "category": "unanswerable",
+    "question": "Ai là người ký hợp đồng thuê nhà phía bên B?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin cụ thể về người ký phía bên B trong tài liệu",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q030",
+    "category": "unanswerable",
+    "question": "Hợp đồng có điều khoản về bảo hiểm y tế không?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin về bảo hiểm y tế trong hợp đồng thuê nhà",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q031",
+    "category": "unanswerable",
+    "question": "Mức phạt cụ thể khi bên B thanh toán chậm thuê nhà là bao nhiêu?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin cụ thể về mức phạt thanh toán chậm trong tài liệu",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q032",
+    "category": "unanswerable",
+    "question": "Nhân viên có được làm việc từ xa không?",
+    "source_docs": ["LaoDong"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin về chính sách làm việc từ xa trong hợp đồng lao động",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q033",
+    "category": "unanswerable",
+    "question": "Có quy định về overtime và lương ngoài giờ không?",
+    "source_docs": ["LaoDong"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin cụ thể về chính sách overtime và lương ngoài giờ",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q034",
+    "category": "comparison",
+    "question": "Giá thuê nhà thay đổi thế nào từ V1 sang V2?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Giá thuê tăng từ 5.000.000 VNĐ/tháng (V1) lên 6.000.000 VNĐ/tháng (V2), tăng 1.000.000 VNĐ",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q035",
+    "category": "comparison",
+    "question": "Thời hạn hợp đồng thuê nhà khác nhau thế nào giữa 2 phiên bản?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 4",
+    "expected_answer": "V1 thời hạn 12 tháng, V2 tăng lên 24 tháng (gấp đôi)",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q036",
+    "category": "comparison",
+    "question": "Nội thất trong hợp đồng thuê nhà có thay đổi gì không?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 2",
+    "expected_answer": "V1 nội thất cơ bản, V2 nâng cấp nội thất cao cấp (thêm tủ lạnh, máy giặt, điều hòa)",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q037",
+    "category": "comparison",
+    "question": "V2 có thêm điều khoản mới nào so với V1 không?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 7",
+    "expected_answer": "V2 thêm: chi phí dịch vụ 500.000 VNĐ/tháng, quyền chấm dứt sớm (báo trước 2 tháng), trách nhiệm sửa chữa của bên A, bảo hiểm cháy nổ của bên B",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q038",
+    "category": "comparison",
+    "question": "Tiền cọc thay đổi thế nào giữa 2 phiên bản thuê nhà?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Tiền cọc tăng từ 10.000.000 VNĐ (V1) lên 12.000.000 VNĐ (V2), tăng 2.000.000 VNĐ",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q039",
+    "category": "comparison",
+    "question": "Ngày thanh toán tiền thuê có thay đổi không?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Có, V1 thanh toán ngày 05 hàng tháng, V2 đổi thành ngày 01 hàng tháng",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q040",
+    "category": "comparison",
+    "question": "Điều khoản tăng giá thuê có gì khác nhau giữa V1 và V2?",
+    "source_docs": ["ThueNha_V1", "ThueNha_V2"],
+    "expected_article": "Điều 3",
+    "expected_answer": "V1 không tăng giá trong toàn bộ thời hạn hợp đồng. V2 chỉ cam kết không tăng giá trong 12 tháng đầu.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q041",
+    "category": "factual",
+    "question": "Điều 5 trong hợp đồng V1 nói về vấn đề gì?",
+    "source_docs": ["HopDong_V1"],
+    "expected_article": "Điều 5",
+    "expected_answer": "Điều 5 quy định về trách nhiệm và nghĩa vụ các bên",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q042",
+    "category": "factual",
+    "question": "Có quy định về việc chấm dứt hợp đồng trước hạn trong hợp đồng thuê nhà V2 không?",
+    "source_docs": ["ThueNha_V2"],
+    "expected_article": "Điều 7",
+    "expected_answer": "Có, V2 cho phép chấm dứt sớm nếu báo trước 2 tháng",
+    "difficulty": "medium"
+  },
+  {
+    "id": "Q043",
+    "category": "multi_article",
+    "question": "Tóm tắt các khoản chi phí bên B phải trả trong hợp đồng thuê nhà V2",
+    "source_docs": ["ThueNha_V2"],
+    "expected_article": "Điều 3",
+    "expected_answer": "Bên B phải trả: tiền thuê 6.000.000 VNĐ/tháng, tiền cọc 12.000.000 VNĐ, chi phí dịch vụ 500.000 VNĐ/tháng, bảo hiểm cháy nổ",
+    "difficulty": "hard"
+  },
+  {
+    "id": "Q044",
+    "category": "unanswerable",
+    "question": "Có điều khoản nào về bảo mật thông tin trong hợp đồng thuê nhà không?",
+    "source_docs": ["ThueNha_V1"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin về điều khoản bảo mật thông tin trong hợp đồng thuê nhà",
+    "difficulty": "easy"
+  },
+  {
+    "id": "Q045",
+    "category": "unanswerable",
+    "question": "Mức lương sau khi tăng hàng năm là bao nhiêu?",
+    "source_docs": ["LaoDong"],
+    "expected_article": null,
+    "expected_answer": "Không tìm thấy thông tin cụ thể về mức tăng lương hàng năm trong hợp đồng lao động",
+    "difficulty": "medium"
+  }
+]
