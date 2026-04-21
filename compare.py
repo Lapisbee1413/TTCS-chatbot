@@ -26,7 +26,7 @@ def main():
     )
     parser.add_argument(
         "--model", "-m", default=QWEN_MODEL,
-        choices=[QWEN_MODEL, MISTRAL_MODEL, "qwen2.5:3b", "qwen2.5:1.5b", "qwen2.5:7b", "mistral"],
+        choices=[QWEN_MODEL, MISTRAL_MODEL, "qwen2.5:3b", "qwen2.5:7b", "mistral"],
         help=f"LLM model Ollama sử dụng (mặc định: {QWEN_MODEL})",
     )
     parser.add_argument(

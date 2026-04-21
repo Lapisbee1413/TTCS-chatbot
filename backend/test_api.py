@@ -48,7 +48,7 @@ def test_query():
     print("=" * 60)
     payload = {
         "question": "Điều 2 quy định gì?",
-        "model": "qwen2.5:1.5b",
+        "model": "qwen2.5:3b",
         "top_k": 3
     }
     response = requests.post(f"{BASE_URL}/api/query", json=payload)
@@ -67,7 +67,7 @@ def test_compare():
         "article_name": "Điều 2",
         "source_v1": "HopDong_V1",
         "source_v2": "HopDong_V2",
-        "model": "qwen2.5:1.5b"
+        "model": "qwen2.5:3b"
     }
     response = requests.post(f"{BASE_URL}/api/compare", json=payload)
     print(f"Status Code: {response.status_code}")

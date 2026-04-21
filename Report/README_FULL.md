@@ -16,7 +16,7 @@ AI-powered chatbot for legal document analysis with citation support. Upload doc
 ### 1. Install Ollama & Pull Models
 ```bash
 # Install from: https://ollama.com
-ollama pull qwen2.5:1.5b
+ollama pull qwen2.5:3b
 ollama pull mistral
 ollama serve  # Keep this running
 ```
@@ -121,7 +121,7 @@ npm run dev
 ┌────────────────▼────────────────────────┐
 │  ChromaDB + Ollama                      │
 │  - sentence-transformers embedding      │
-│  - Qwen 2.5:1.5b / Mistral 7B          │
+│  - Qwen 2.5:3b / Mistral 7B            │
 └─────────────────────────────────────────┘
 ```
 
@@ -245,7 +245,7 @@ Ask a question
 ```json
 {
   "question": "Điều 5 quy định gì?",
-  "model": "qwen2.5:1.5b",
+  "model": "qwen2.5:3b",
   "top_k": 5,
   "source_filter": null
 }
@@ -258,7 +258,7 @@ Compare two versions
   "article_name": "Điều 5",
   "source_v1": "HopDong_V1",
   "source_v2": "HopDong_V2",
-  "model": "qwen2.5:1.5b"
+  "model": "qwen2.5:3b"
 }
 ```
 
@@ -284,7 +284,7 @@ List all uploaded documents
 - Axios
 
 **Models:**
-- Qwen 2.5:1.5b (default LLM)
+- Qwen 2.5:3b (default LLM)
 - Mistral 7B (alternative)
 - paraphrase-multilingual-MiniLM-L12-v2 (embeddings)
 
@@ -299,8 +299,8 @@ List all uploaded documents
 | W5-6 | Index & retrieval | ✅ 100% |
 | W7-8 | Citation & comparison | ✅ 100% |
 | **W9** | **UI Development** | **✅ 85%** |
-| W10 | Dataset & evaluation | ⏳ Pending |
-| W11 | Quality improvement | ⏳ Pending |
+| W10 | Dataset & evaluation | ✅ Baseline + Round2 |
+| W11 | Quality improvement | ✅ Round2 + comparison report |
 | W12 | Final report & demo | ⏳ Pending |
 
 ---

@@ -44,7 +44,7 @@ Content-Type: application/json
 
 {
   "question": "Điều 5 quy định gì?",
-  "model": "qwen2.5:1.5b",
+  "model": "qwen2.5:3b",
   "top_k": 5,
   "source_filter": "HopDong_V1"
 }
@@ -59,7 +59,7 @@ Content-Type: application/json
   "article_name": "Điều 5",
   "source_v1": "HopDong_V1",
   "source_v2": "HopDong_V2",
-  "model": "qwen2.5:1.5b"
+  "model": "qwen2.5:3b"
 }
 ```
 

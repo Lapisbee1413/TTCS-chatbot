@@ -70,7 +70,7 @@ async function testQuery(question = 'Điều 2 quy định gì?') {
   try {
     const response = await axios.post(`${API_BASE}/api/query`, {
       question,
-      model: 'qwen2.5:1.5b',
+      model: 'qwen2.5:3b',
       top_k: 3,
     })
     
@@ -105,7 +105,7 @@ async function testCompare(documents) {
       article_name: 'Điều 2',
       source_v1: documents[0].source,
       source_v2: documents[1].source,
-      model: 'qwen2.5:1.5b',
+      model: 'qwen2.5:3b',
     })
     
     if (response.data.success && response.data.comparison_report) {

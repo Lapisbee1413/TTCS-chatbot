@@ -274,15 +274,31 @@ def calc_compare_completeness(
         # Kiểm tra xem field hoặc giá trị có xuất hiện trong report không
         is_detected = False
         
-        # Check field name
+        # Check field name (exact)
         if field and field in report_lower:
             is_detected = True
         
-        # Check values
+        # Check values (exact)
         if v1_val and v1_val in report_lower:
             is_detected = True
         if v2_val and v2_val in report_lower:
             is_detected = True
+        
+        # Fuzzy: check partial — tách field/value thành từ, kiểm tra từng phần
+        if not is_detected:
+            # Tách thành các từ > 2 ký tự để fuzzy match
+            all_parts = []
+            if field:
+                all_parts.extend([p.strip() for p in re.split(r'[\s,/]+', field) if len(p.strip()) > 2])
+            if v1_val:
+                all_parts.extend([p.strip() for p in re.split(r'[\s,/]+', v1_val) if len(p.strip()) > 2])
+            if v2_val:
+                all_parts.extend([p.strip() for p in re.split(r'[\s,/]+', v2_val) if len(p.strip()) > 2])
+            
+            # Nếu >= 2 parts xuất hiện trong report → coi là detected
+            matched_parts = sum(1 for p in all_parts if p in report_lower)
+            if all_parts and matched_parts >= min(2, len(all_parts)):
+                is_detected = True
         
         if is_detected:
             detected += 1

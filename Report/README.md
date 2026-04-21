@@ -12,6 +12,7 @@ Folder này chứa tất cả tài liệu báo cáo, documentation cho project.
 ### Progress Reports
 - **PROGRESS_W7-8.md** - Báo cáo tuần 7-8 (Citation & Comparison)
 - **PROGRESS_W9.md** - Báo cáo tuần 9 (UI Development) - Chi tiết
+- **PROGRESS_W11.md** - Báo cáo tuần 11 (Quality Improvement + Evaluation)
 - **WEEK9_COMPLETE.md** - Tóm tắt hoàn thành tuần 9
 
 ### Technical Docs
@@ -27,12 +28,13 @@ Folder này chứa tất cả tài liệu báo cáo, documentation cho project.
 | SCREENSHOTS.md | UI description | Báo cáo, presentation |
 | PROGRESS_W7-8.md | Báo cáo W7-8 | Giáo viên, tracking |
 | PROGRESS_W9.md | Báo cáo W9 chi tiết | Giáo viên, review |
+| PROGRESS_W11.md | Báo cáo W11 + metrics cải tiến | Giáo viên, review |
 | WEEK9_COMPLETE.md | Summary W9 | Quick overview |
 
 ## 🎯 Khi nào dùng file nào?
 
 **Làm báo cáo tuần:**
-→ Dùng `PROGRESS_W9.md`
+→ Dùng `PROGRESS_W11.md`
 
 **Demo cho giáo viên:**
 → Dùng `USER_GUIDE.md` + `SCREENSHOTS.md`

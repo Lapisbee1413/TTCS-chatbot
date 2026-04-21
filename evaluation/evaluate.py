@@ -298,14 +298,21 @@ def main():
     parser.add_argument("--qa-only", action="store_true", help="Chỉ chạy Q&A evaluation")
     parser.add_argument("--compare-only", action="store_true", help="Chỉ chạy compare evaluation")
     parser.add_argument("--output", "-o", default=RESULTS_PATH, help="Output file path")
+    parser.add_argument("--tag", "-t", default=None, help="Tag cho round evaluation (VD: round2). Tự tạo output filename.")
     
     args = parser.parse_args()
+    
+    # Auto-generate output path from tag
+    if args.tag and args.output == RESULTS_PATH:
+        args.output = os.path.join(EVAL_DIR, f"{args.tag}_results.json")
 
     print(f"\n{'='*60}")
     print(f"🚀 RAG CHATBOT EVALUATION")
     print(f"   Model : {args.model}")
     print(f"   Top-K : {args.top_k}")
     print(f"   Output: {args.output}")
+    if args.tag:
+        print(f"   Tag   : {args.tag}")
     print(f"   Time  : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}")
 
@@ -335,6 +342,7 @@ def main():
             "timestamp": datetime.now().isoformat(),
             "total_qa_questions": len(qa_results),
             "total_compare_cases": len(compare_results),
+            "tag": args.tag or "baseline",
         },
         "summary": summary,
         "qa_results": qa_results,
@@ -344,6 +352,11 @@ def main():
     save_json(args.output, output_data)
     print(f"✅ Đã lưu kết quả tại: {args.output}")
     print(f"   Dùng lệnh sau để xem: type {args.output}")
+    
+    # Hint for comparison
+    if args.tag and args.tag != "baseline":
+        print(f"\n📊 So sánh với baseline:")
+        print(f"   python evaluation/improvement_report.py --improved {args.output}")
 
 
 if __name__ == "__main__":

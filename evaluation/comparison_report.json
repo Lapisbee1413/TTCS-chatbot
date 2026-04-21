@@ -1,0 +1,89 @@
+{
+  "metrics_comparison": {
+    "retrieval_accuracy": {
+      "baseline": 0.2595,
+      "improved": 0.2216,
+      "delta": -0.0379,
+      "pct_change": 14.6,
+      "direction": "↓ Giảm",
+      "is_improved": false
+    },
+    "answer_relevance": {
+      "baseline": 0.6852,
+      "improved": 0.5284,
+      "delta": -0.1568,
+      "pct_change": 22.9,
+      "direction": "↓ Giảm",
+      "is_improved": false
+    },
+    "citation_accuracy": {
+      "baseline": 0.1333,
+      "improved": 0.6667,
+      "delta": 0.5334,
+      "pct_change": 400.2,
+      "direction": "↑ Tăng",
+      "is_improved": true
+    },
+    "hallucination": {
+      "baseline": 0.75,
+      "improved": 0.0,
+      "delta": -0.75,
+      "pct_change": 100.0,
+      "direction": "↓ Giảm",
+      "is_improved": true
+    },
+    "compare_completeness": {
+      "baseline": 0.0833,
+      "improved": 0.525,
+      "delta": 0.4417,
+      "pct_change": 530.3,
+      "direction": "↑ Tăng",
+      "is_improved": true
+    },
+    "overall_score": {
+      "baseline": 0.3823,
+      "improved": 0.3883,
+      "delta": 0.006,
+      "pct_change": 1.6,
+      "direction": "↑ Tăng",
+      "is_improved": true
+    }
+  },
+  "category_breakdown": {
+    "qa_comparison": {
+      "baseline_count": 7,
+      "improved_count": 7,
+      "baseline_avg_relevance": 0.7833,
+      "improved_avg_relevance": 0.3762,
+      "delta": -0.4071
+    },
+    "qa_cross_document": {
+      "baseline_count": 4,
+      "improved_count": 4,
+      "baseline_avg_relevance": 0.3438,
+      "improved_avg_relevance": 0.0312,
+      "delta": -0.3125
+    },
+    "qa_factual": {
+      "baseline_count": 20,
+      "improved_count": 20,
+      "baseline_avg_relevance": 0.778,
+      "improved_avg_relevance": 0.5296,
+      "delta": -0.2483
+    },
+    "qa_multi_article": {
+      "baseline_count": 6,
+      "improved_count": 6,
+      "baseline_avg_relevance": 0.729,
+      "improved_avg_relevance": 0.6178,
+      "delta": -0.1111
+    },
+    "qa_unanswerable": {
+      "baseline_count": 8,
+      "improved_count": 8,
+      "baseline_avg_relevance": 0.5052,
+      "improved_avg_relevance": 0.8398,
+      "delta": 0.3346
+    }
+  }
+}

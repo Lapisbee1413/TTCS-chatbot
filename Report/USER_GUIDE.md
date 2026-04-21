@@ -36,7 +36,7 @@ RAG Legal Chatbot là ứng dụng AI hỗ trợ phân tích tài liệu pháp l
 # Download từ: https://ollama.com
 # Sau khi cài đặt, pull models:
 
-ollama pull qwen2.5:1.5b
+ollama pull qwen2.5:3b
 ollama pull mistral
 
 # Khởi động Ollama (giữ terminal này chạy)
@@ -212,7 +212,7 @@ Click vào citation chip để xem chi tiết chunk.
 ### Multi-model Support
 
 Hỗ trợ nhiều LLM models:
-- **qwen2.5:1.5b** (default - nhanh)
+- **qwen2.5:3b** (default)
 - **mistral** (chất lượng cao hơn, chậm hơn)
 
 Để đổi model, sử dụng CLI:
@@ -268,7 +268,7 @@ ollama serve
 ollama list
 
 # Pull models nếu chưa có
-ollama pull qwen2.5:1.5b
+ollama pull qwen2.5:3b
 ollama pull mistral
 ```
 
@@ -291,7 +291,7 @@ ollama pull mistral
 **Fix:**
 1. Upload ít nhất 1 tài liệu
 2. Chạy `ollama serve`
-3. Chạy `ollama pull qwen2.5:1.5b`
+3. Chạy `ollama pull qwen2.5:3b`
 
 ---
 

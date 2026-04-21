@@ -10,7 +10,7 @@
 
 ```bash
 # 1. Install Ollama & models
-ollama pull qwen2.5:1.5b
+ollama pull qwen2.5:3b
 ollama serve
 
 # 2. Install dependencies
@@ -48,7 +48,8 @@ TTCS-chatbot/
 ├── Report/            # 📝 All documentation
 │   ├── README_FULL.md
 │   ├── USER_GUIDE.md
-│   └── PROGRESS_W9.md
+│   ├── PROGRESS_W9.md
+│   └── PROGRESS_W11.md
 ├── test_documents/    # 📄 Sample files
 ├── rag_pipeline.py    # Core RAG logic
 └── readme.md          # This file
@@ -60,7 +61,8 @@ TTCS-chatbot/
 
 - **[Full Documentation →](Report/README_FULL.md)** - Complete guide
 - **[User Guide →](Report/USER_GUIDE.md)** - How to use
-- **[Progress Report →](Report/PROGRESS_W9.md)** - Week 9 status
+- **[Progress W9 →](Report/PROGRESS_W9.md)** - UI development status
+- **[Progress W11 →](Report/PROGRESS_W11.md)** - Quality improvement + evaluation
 
 ---
 
@@ -86,7 +88,7 @@ node integration_test.js
 
 ## 📊 Status
 
-✅ **Week 9 Complete** (100%) - Ready for demo!
+✅ **Week 11 Round2 Complete** - Baseline vs improved report generated.
 
 ---
 

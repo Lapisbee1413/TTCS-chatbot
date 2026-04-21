@@ -52,7 +52,7 @@ export const uploadDocument = async (file, sourceName = null) => {
 export const queryDocuments = async (question, options = {}) => {
   const payload = {
     question,
-    model: options.model || 'qwen2.5:1.5b',
+    model: options.model || 'qwen2.5:3b',
     top_k: options.top_k || 5,
     source_filter: options.source_filter || null,
   }
@@ -64,7 +64,7 @@ export const queryDocuments = async (question, options = {}) => {
 /**
  * Compare two versions
  */
-export const compareVersions = async (articleName, sourceV1, sourceV2, model = 'qwen2.5:1.5b') => {
+export const compareVersions = async (articleName, sourceV1, sourceV2, model = 'qwen2.5:3b') => {
   const payload = {
     article_name: articleName,
     source_v1: sourceV1,

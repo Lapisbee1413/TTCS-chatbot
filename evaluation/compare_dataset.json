@@ -11,7 +11,7 @@
       {"type": "modified", "field": "Ngày thanh toán", "v1": "ngày 05 hàng tháng", "v2": "ngày 01 hàng tháng"},
       {"type": "added", "field": "Chi phí dịch vụ", "v1": null, "v2": "500.000 VNĐ/tháng"},
       {"type": "modified", "field": "Điều khoản tăng giá", "v1": "Không tăng giá trong toàn bộ hợp đồng", "v2": "Không tăng giá trong 12 tháng đầu"}
-    ]
+]
   },
   {
     "id": "C002",

@@ -22,7 +22,7 @@ async def compare_versions(request: CompareRequest):
     - **article_name**: Name of the article to compare (e.g., "Điều 5")
     - **source_v1**: Source name for version 1
     - **source_v2**: Source name for version 2
-    - **model**: LLM model to use (default: qwen2.5:1.5b)
+    - **model**: LLM model to use (default: qwen2.5:3b)
     """
     try:
         # Generate comparison report using existing RAG pipeline

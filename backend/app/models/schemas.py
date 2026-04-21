@@ -25,7 +25,7 @@ class UploadResponse(BaseModel):
 # ──────────────────────────────────────────────
 class QueryRequest(BaseModel):
     question: str = Field(..., description="User question")
-    model: str = Field(default="qwen2.5:1.5b", description="LLM model to use")
+    model: str = Field(default="qwen2.5:3b", description="LLM model to use")
     top_k: int = Field(default=5, description="Number of chunks to retrieve")
     source_filter: Optional[str] = Field(default=None, description="Filter by source name")
 
@@ -51,7 +51,7 @@ class CompareRequest(BaseModel):
     article_name: str = Field(..., description="Article name to compare (e.g., 'Điều 5')")
     source_v1: str = Field(..., description="Source name for version 1")
     source_v2: str = Field(..., description="Source name for version 2")
-    model: str = Field(default="qwen2.5:1.5b", description="LLM model to use")
+    model: str = Field(default="qwen2.5:3b", description="LLM model to use")
 
 
 class CompareResponse(BaseModel):
