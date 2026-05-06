@@ -5,25 +5,25 @@ import { Link } from 'react-router-dom'
 const features = [
   {
     title: 'Upload Documents',
-    description: 'Upload PDF or DOCX legal documents to the knowledge base',
+    description: 'Tải lên tài liệu PDF hoặc DOCX vào kho tài liệu',
     icon: <Upload sx={{ fontSize: 60 }} />,
     path: '/upload',
   },
   {
     title: 'Chat & Query',
-    description: 'Ask questions and get answers with citations',
+    description: 'Đặt câu hỏi và nhận câu trả lời kèm trích dẫn',
     icon: <Chat sx={{ fontSize: 60 }} />,
     path: '/chat',
   },
   {
     title: 'Parallel View',
-    description: 'View two document versions side-by-side',
+    description: 'Xem song song hai phiên bản tài liệu',
     icon: <ViewWeek sx={{ fontSize: 60 }} />,
     path: '/parallel',
   },
   {
     title: 'Compare Versions',
-    description: 'Compare specific articles between versions',
+    description: 'So sánh các điều khoản cụ thể giữa hai phiên bản',
     icon: <CompareArrows sx={{ fontSize: 60 }} />,
     path: '/compare',
   },
@@ -34,11 +34,10 @@ export default function HomePage() {
     <Container maxWidth="lg">
       <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
         <Typography variant="h3" gutterBottom>
-          Legal Document RAG Chatbot
+          RAG + Local LLM Chatbot
         </Typography>
         <Typography variant="body1" color="text.secondary" paragraph>
-          An AI-powered chatbot for legal document analysis with citation support.
-          Upload documents, ask questions, and compare versions with evidence-based answers.
+          Chatbot AI hỗ trợ phân tích tài liệu với cơ chế RAG và mô hình LLM chạy local.
         </Typography>
       </Paper>
 

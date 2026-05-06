@@ -4,7 +4,7 @@ Main application entry point
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import upload, query, compare, documents, content
+from app.routers import upload, query, compare, documents, content, delete
 
 app = FastAPI(
     title="RAG Chatbot API",
@@ -27,6 +27,7 @@ app.include_router(query.router, prefix="/api", tags=["query"])
 app.include_router(compare.router, prefix="/api", tags=["compare"])
 app.include_router(documents.router, prefix="/api", tags=["documents"])
 app.include_router(content.router, prefix="/api", tags=["content"])
+app.include_router(delete.router, prefix="/api", tags=["delete"])
 
 
 @app.get("/")

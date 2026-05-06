@@ -4,7 +4,6 @@ import {
   Paper,
   Typography,
   Box,
-  Grid,
   Select,
   MenuItem,
   FormControl,
@@ -139,142 +138,148 @@ export default function ParallelViewPage() {
         View two document versions side-by-side
       </Typography>
 
-      <Box sx={{ mb: 3 }}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} md={5}>
-            <FormControl fullWidth>
-              <InputLabel>Version 1</InputLabel>
-              <Select value={selectedV1} onChange={(e) => setSelectedV1(e.target.value)} label="Version 1">
-                {documents.map((doc) => (
-                  <MenuItem key={doc.source} value={doc.source}>
-                    {doc.source} ({doc.num_chunks} chunks)
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={2} sx={{ textAlign: 'center' }}>
-            <FormControlLabel
-              control={<Switch checked={syncScroll} onChange={(e) => setSyncScroll(e.target.checked)} />}
-              label="Sync Scroll"
-            />
-          </Grid>
-          <Grid item xs={12} md={5}>
-            <FormControl fullWidth>
-              <InputLabel>Version 2</InputLabel>
-              <Select value={selectedV2} onChange={(e) => setSelectedV2(e.target.value)} label="Version 2">
-                {documents.map((doc) => (
-                  <MenuItem key={doc.source} value={doc.source}>
-                    {doc.source} ({doc.num_chunks} chunks)
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+      <Box
+        sx={{
+          mb: 3,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) auto minmax(0, 1fr)' },
+          gap: 2,
+          alignItems: 'center',
+        }}
+      >
+        <FormControl fullWidth>
+          <InputLabel>Version 1</InputLabel>
+          <Select value={selectedV1} onChange={(e) => setSelectedV1(e.target.value)} label="Version 1">
+            {documents.map((doc) => (
+              <MenuItem key={doc.source} value={doc.source}>
+                {doc.source} ({doc.num_chunks} chunks)
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <FormControlLabel
+            control={<Switch checked={syncScroll} onChange={(e) => setSyncScroll(e.target.checked)} />}
+            label="Sync Scroll"
+          />
+        </Box>
+
+        <FormControl fullWidth>
+          <InputLabel>Version 2</InputLabel>
+          <Select value={selectedV2} onChange={(e) => setSelectedV2(e.target.value)} label="Version 2">
+            {documents.map((doc) => (
+              <MenuItem key={doc.source} value={doc.source}>
+                {doc.source} ({doc.num_chunks} chunks)
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              height: '600px', 
-              overflow: 'auto',
-              border: syncScroll ? '2px solid #1976d2' : 'none'
-            }}
-            ref={scrollRef1}
-            onScroll={handleScroll(scrollRef1, scrollRef2)}
-          >
-            <Box sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom color="primary">
-                {selectedV1}
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              
-              {v1Content.map((item, index) => {
-                const v2Item = v2Content[index]
-                const diff = v2Item ? getDifferences(item.content, v2Item.content) : { type: 'removed' }
-                
-                return (
-                  <Box
-                    key={index}
-                    sx={{
-                      mb: 3,
-                      p: 2,
-                      borderRadius: 1,
-                      bgcolor: diff.type === 'same' ? '#f5f5f5' : 
-                               diff.type === 'modified' ? '#fff3e0' :
-                               diff.type === 'removed' ? '#ffebee' : '#f5f5f5',
-                      border: '1px solid',
-                      borderColor: diff.type === 'same' ? '#e0e0e0' :
-                                   diff.type === 'modified' ? '#ff9800' :
-                                   diff.type === 'removed' ? '#f44336' : '#e0e0e0'
-                    }}
-                  >
-                    <Typography variant="subtitle2" color="primary" gutterBottom>
-                      {item.article}
-                    </Typography>
-                    <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                      {item.content}
-                    </Typography>
-                  </Box>
-                )
-              })}
-            </Box>
-          </Paper>
-        </Grid>
-        
-        <Grid item xs={12} md={6}>
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              height: '600px', 
-              overflow: 'auto',
-              border: syncScroll ? '2px solid #dc004e' : 'none'
-            }}
-            ref={scrollRef2}
-            onScroll={handleScroll(scrollRef2, scrollRef1)}
-          >
-            <Box sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom color="secondary">
-                {selectedV2}
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              
-              {v2Content.map((item, index) => {
-                const v1Item = v1Content[index]
-                const diff = v1Item ? getDifferences(v1Item.content, item.content) : { type: 'added' }
-                
-                return (
-                  <Box
-                    key={index}
-                    sx={{
-                      mb: 3,
-                      p: 2,
-                      borderRadius: 1,
-                      bgcolor: diff.type === 'same' ? '#f5f5f5' :
-                               diff.type === 'modified' ? '#fff3e0' :
-                               diff.type === 'added' ? '#e8f5e9' : '#f5f5f5',
-                      border: '1px solid',
-                      borderColor: diff.type === 'same' ? '#e0e0e0' :
-                                   diff.type === 'modified' ? '#ff9800' :
-                                   diff.type === 'added' ? '#4caf50' : '#e0e0e0'
-                    }}
-                  >
-                    <Typography variant="subtitle2" color="secondary" gutterBottom>
-                      {item.article}
-                    </Typography>
-                    <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                      {item.content}
-                    </Typography>
-                  </Box>
-                )
-              })}
-            </Box>
-          </Paper>
-        </Grid>
-      </Grid>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+          gap: 2,
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            height: '600px',
+            overflow: 'auto',
+            border: syncScroll ? '2px solid #1976d2' : 'none',
+          }}
+          ref={scrollRef1}
+          onScroll={handleScroll(scrollRef1, scrollRef2)}
+        >
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom color="primary">
+              {selectedV1}
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
+
+            {v1Content.map((item, index) => {
+              const v2Item = v2Content[index]
+              const diff = v2Item ? getDifferences(item.content, v2Item.content) : { type: 'removed' }
+
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    mb: 3,
+                    p: 2,
+                    borderRadius: 1,
+                    bgcolor: diff.type === 'same' ? '#f5f5f5' : 
+                             diff.type === 'modified' ? '#fff3e0' :
+                             diff.type === 'removed' ? '#ffebee' : '#f5f5f5',
+                    border: '1px solid',
+                    borderColor: diff.type === 'same' ? '#e0e0e0' :
+                                 diff.type === 'modified' ? '#ff9800' :
+                                 diff.type === 'removed' ? '#f44336' : '#e0e0e0'
+                  }}
+                >
+                  <Typography variant="subtitle2" color="primary" gutterBottom>
+                    {item.article}
+                  </Typography>
+                  <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                    {item.content}
+                  </Typography>
+                </Box>
+              )
+            })}
+          </Box>
+        </Paper>
+
+        <Paper
+          elevation={3}
+          sx={{
+            height: '600px',
+            overflow: 'auto',
+            border: syncScroll ? '2px solid #dc004e' : 'none',
+          }}
+          ref={scrollRef2}
+          onScroll={handleScroll(scrollRef2, scrollRef1)}
+        >
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom color="secondary">
+              {selectedV2}
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
+
+            {v2Content.map((item, index) => {
+              const v1Item = v1Content[index]
+              const diff = v1Item ? getDifferences(v1Item.content, item.content) : { type: 'added' }
+
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    mb: 3,
+                    p: 2,
+                    borderRadius: 1,
+                    bgcolor: diff.type === 'same' ? '#f5f5f5' :
+                             diff.type === 'modified' ? '#fff3e0' :
+                             diff.type === 'added' ? '#e8f5e9' : '#f5f5f5',
+                    border: '1px solid',
+                    borderColor: diff.type === 'same' ? '#e0e0e0' :
+                                 diff.type === 'modified' ? '#ff9800' :
+                                 diff.type === 'added' ? '#4caf50' : '#e0e0e0'
+                  }}
+                >
+                  <Typography variant="subtitle2" color="secondary" gutterBottom>
+                    {item.article}
+                  </Typography>
+                  <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                    {item.content}
+                  </Typography>
+                </Box>
+              )
+            })}
+          </Box>
+        </Paper>
+      </Box>
 
       <Box sx={{ mt: 2 }}>
         <Alert severity="info">

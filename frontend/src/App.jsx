@@ -1,12 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 import ErrorBoundary from './components/ErrorBoundary'
+import RouteErrorPage from './components/RouteErrorPage'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import UploadPage from './pages/UploadPage'
 import ChatPage from './pages/ChatPage'
 import ParallelViewPage from './pages/ParallelViewPage'
 import ComparePage from './pages/ComparePage'
+import DocumentsPage from './pages/DocumentsPage'
 
 // Create Material-UI theme
 const theme = createTheme({
@@ -29,6 +31,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <RouteErrorPage />,
     children: [
       {
         index: true,
@@ -49,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: 'compare',
         element: <ComparePage />,
+      },
+      {
+        path: 'documents',
+        element: <DocumentsPage />,
       },
     ],
   },

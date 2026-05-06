@@ -85,6 +85,18 @@ export const listDocuments = async () => {
 }
 
 /**
+ * Delete a document by source name
+ */
+export const deleteDocument = async (sourceName) => {
+  if (!sourceName) {
+    throw new Error('Source name is required')
+  }
+
+  const response = await apiClient.delete(`${API_ENDPOINTS.documents}/${encodeURIComponent(sourceName)}`)
+  return response.data
+}
+
+/**
  * Get full content of a document by source name
  */
 export const getDocumentContent = async (sourceName) => {
