@@ -30,7 +30,8 @@ frontend/.env
 frontend/.vite/
 
 # Test files (optional - remove this if you want to commit test docs)
-# test_documents/
+test_documents/
+Report/
 
 # IDE
 .vscode/

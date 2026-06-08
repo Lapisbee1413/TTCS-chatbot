@@ -39,9 +39,9 @@
     "article_name": "Điều 5",
     "source_v1": "ThueNha_V1",
     "source_v2": "ThueNha_V2",
-    "description": "So sánh trách nhiệm bên A",
+    "description": "So sánh trách nhiệm bên A và điều khoản tăng giá",
     "expected_changes": [
-      {"type": "added", "field": "Sửa chữa", "v1": null, "v2": "Bên A chịu trách nhiệm sửa chữa hư hỏng lớn"}
+      {"type": "modified", "field": "Tăng giá thuê", "v1": "Không tăng giá trong thời hạn hợp đồng", "v2": "Không tăng giá trong 12 tháng đầu, tối đa 10%/năm"}
     ]
   },
   {
@@ -59,9 +59,9 @@
     "article_name": "Điều 7",
     "source_v1": "ThueNha_V1",
     "source_v2": "ThueNha_V2",
-    "description": "So sánh điều khoản chấm dứt hợp đồng",
+    "description": "So sánh điều khoản giải quyết tranh chấp",
     "expected_changes": [
-      {"type": "added", "field": "Chấm dứt sớm", "v1": null, "v2": "Được phép chấm dứt sớm nếu báo trước 2 tháng"}
+      {"type": "modified", "field": "Giải quyết tranh chấp", "v1": "thương lượng", "v2": "thương lượng, hòa giải"}
     ]
   },
   {
@@ -79,9 +79,9 @@
     "article_name": "Điều 5",
     "source_v1": "HopDong_V1",
     "source_v2": "HopDong_V2",
-    "description": "So sánh trách nhiệm các bên trong hợp đồng gốc",
+    "description": "So sánh điều khoản bảo mật trong hợp đồng gốc",
     "expected_changes": [
-      {"type": "modified", "field": "Trách nhiệm", "v1": "Theo V1", "v2": "Theo V2 (có bổ sung)"}
+      {"type": "modified", "field": "Bảo mật", "v1": "01 năm sau khi thanh lý", "v2": "vô thời hạn"}
     ]
   },
   {
@@ -89,9 +89,11 @@
     "article_name": "Điều 3",
     "source_v1": "PhuLuc_V1",
     "source_v2": "PhuLuc_V2",
-    "description": "So sánh phụ lục kho V1 vs V2",
+    "description": "So sánh mức SLA và hoàn trả trong phụ lục",
     "expected_changes": [
-      {"type": "modified", "field": "Quy định kho", "v1": "Theo phụ lục V1", "v2": "Theo phụ lục V2 (có thay đổi)"}
+      {"type": "modified", "field": "SLA Uptime", "v1": "99.9%", "v2": "99.95%"},
+      {"type": "modified", "field": "Hoàn trả Khoản 1", "v1": "5%", "v2": "8%"},
+      {"type": "modified", "field": "Hoàn trả Khoản 2", "v1": "15%", "v2": "20%"}
     ]
   },
   {

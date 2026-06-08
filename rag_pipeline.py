@@ -853,6 +853,12 @@ def generate_comparison_report(article_name: str, source_v1: str, source_v2: str
     Sinh báo cáo so sánh 2 phiên bản của cùng một điều khoản.
     Tuân thủ nguyên tắc: "Không bằng chứng → Không kết luận"
 
+    Week 12: Cải tiến compare pipeline
+      - Đảo thứ tự prompt: KHÁC BIỆT viết trước, TÓM TẮT sau
+      - Tăng num_predict 2048 → 4096
+      - Thêm truncation detection
+      - Yêu cầu liệt kê cả thay đổi nhỏ
+
     Returns:
         dict with keys: article_name, v1_text, v2_text, comparison_report, model, citations
     """
@@ -875,7 +881,7 @@ def generate_comparison_report(article_name: str, source_v1: str, source_v2: str
             "citations": []
         }
 
-    # Xây dựng prompt so sánh (cải tiến Week 11)
+    # Xây dựng prompt so sánh (Week 12 — ưu tiên KHÁC BIỆT trước)
     prompt = f"""Bạn là trợ lý AI phân tích tài liệu pháp lý. Nhiệm vụ: SO SÁNH hai phiên bản của "{article_name}".
 
 NGUYÊN TẮC BẮT BUỘC:
@@ -883,6 +889,7 @@ NGUYÊN TẮC BẮT BUỘC:
 2. TRÍCH DẪN trực tiếp câu/cụm từ từ văn bản gốc (dùng dấu "..." để quote).
 3. Nếu không tìm thấy khác biệt → nói rõ "Không phát hiện sự khác biệt".
 4. Nếu thiếu thông tin → nói rõ "Không đủ thông tin để kết luận".
+5. Kể cả thay đổi NHỎ (thêm/bớt 1-2 từ, thay đổi con số) cũng phải liệt kê trong ĐIỂM KHÁC BIỆT.
 
 === PHIÊN BẢN 1: {source_v1} ===
 {v1_text}
@@ -891,26 +898,28 @@ NGUYÊN TẮC BẮT BUỘC:
 {v2_text}
 
 === YÊU CẦU ===
-Tạo báo cáo theo cấu trúc:
+Tạo báo cáo ĐÚNG THỨ TỰ sau (viết KHÁC BIỆT trước, TÓM TẮT sau):
 
-**1. TÓM TẮT V1 ({source_v1})**
-- Liệt kê các nội dung chính, QUOTE trực tiếp từ văn bản.
+**1. ĐIỂM KHÁC BIỆT**
+- ĐÂY LÀ PHẦN QUAN TRỌNG NHẤT. Viết đầy đủ, không được bỏ sót.
+- Liệt kê TỪNG điểm khác biệt theo format:
+  * [Trường/Khoản]: V1 = "quote V1" → V2 = "quote V2"
+- So sánh từng khoản tương ứng giữa V1 và V2. Nếu con số, ngày tháng, hoặc từ ngữ khác nhau → liệt kê.
+- Nếu không có khác biệt: "Không phát hiện sự khác biệt"
 
-**2. TÓM TẮT V2 ({source_v2})**
-- Liệt kê các nội dung chính, QUOTE trực tiếp từ văn bản.
-
-**3. ĐIỂM GIỐNG NHAU**
-- Liệt kê, quote cụ thể. Nếu không có: "Không phát hiện điểm giống nhau rõ ràng"
-
-**4. ĐIỂM KHÁC BIỆT**
-- Liệt kê từng điểm khác biệt theo format:
-  * [Trường]: V1 = "quote V1" → V2 = "quote V2"
-- Nếu không có: "Không phát hiện sự khác biệt"
-
-**5. NỘI DUNG MỚI THÊM/BỎ ĐI**
-- V2 thêm mới: liệt kê
+**2. NỘI DUNG MỚI THÊM/BỎ ĐI**
+- V2 thêm mới (không có trong V1): liệt kê
 - V1 có nhưng V2 bỏ: liệt kê
 - Nếu không có: "Không phát hiện nội dung mới/bỏ đi"
+
+**3. ĐIỂM GIỐNG NHAU**
+- Liệt kê ngắn gọn các điểm giống nhau. Nếu không có: "Không phát hiện điểm giống nhau rõ ràng"
+
+**4. TÓM TẮT V1 ({source_v1})**
+- Liệt kê ngắn gọn các nội dung chính.
+
+**5. TÓM TẮT V2 ({source_v2})**
+- Liệt kê ngắn gọn các nội dung chính.
 
 === BÁO CÁO SO SÁNH ==="""
 
@@ -919,11 +928,11 @@ Tạo báo cáo theo cấu trúc:
         "model": model,
         "prompt": prompt,
         "stream": False,
-        "options": {"temperature": 0.1, "num_predict": 2048},  # Tăng num_predict cho compare
+        "options": {"temperature": 0.1, "num_predict": 4096},  # Token budget đủ cho báo cáo 5 phần
     }
 
     try:
-        response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=180)
+        response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=300)
         response.raise_for_status()
         comparison_report = response.json().get("response", "").strip()
     except requests.exceptions.ConnectionError:
@@ -933,6 +942,12 @@ Tạo báo cáo theo cấu trúc:
         )
     except Exception as e:
         comparison_report = f"[Lỗi] {str(e)}"
+
+    # Truncation detection: cảnh báo nếu output bị cắt giữa chừng
+    if comparison_report and not comparison_report.startswith("[Lỗi]"):
+        has_diff_section = "ĐIỂM KHÁC BIỆT" in comparison_report or "KHÁC BIỆT" in comparison_report
+        if not has_diff_section:
+            comparison_report += "\n\n⚠️ Báo cáo có thể bị cắt ngắn — không tìm thấy phần ĐIỂM KHÁC BIỆT. Vui lòng thử lại."
 
     # Tạo citations
     citations = []

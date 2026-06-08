@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "model": "qwen2.5:3b",
+    "top_k": 5,
+    "timestamp": "2026-06-07T10:54:59.746035",
+    "total_qa_questions": 0,
+    "total_compare_cases": 12,
+    "tag": "round4"
+  },
+  "summary": {
+    "retrieval_accuracy": {
+      "mean": null,
+      "min": null,
+      "max": null,
+      "count": 0
+    },
+    "answer_relevance": {
+      "mean": null,
+      "min": null,
+      "max": null,
+      "count": 0
+    },
+    "citation_accuracy": {
+      "mean": null,
+      "min": null,
+      "max": null,
+      "count": 0
+    },
+    "hallucination": {
+      "mean": null,
+      "min": null,
+      "max": null,
+      "count": 0
+    },
+    "compare_completeness": {
+      "mean": 0.7083,
+      "min": 0.0,
+      "max": 1.0,
+      "count": 12
+    },
+    "overall_score": 0.7083,
+    "total_questions": 12
+  },
+  "qa_results": [],
+  "compare_results": [
+    {
+      "id": "C001",
+      "article_name": "Điều 3",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Điều 3]: V1 = \"Giá thuê: 5.000.000 VNĐ/tháng (Năm triệu đồng).\"\n  * V2 = \"Giá thuê: 6.000.000 VNĐ/tháng (Sáu triệu đồng).\"\n\n- [Điều 3]: V1 = \"Phương thức thanh toán: Chuyển khoản vào ngày 05 hàng tháng.\"\n  * V2 = \"Phương thức thanh toán: Chuyển khoản vào ngày 01 hàng tháng.\"\n\n- [Điều 3]: V1 = \"Tiền đặt cọc: 10.000.000 VNĐ (Mười triệu đồng), sẽ được hoàn trả khi kết thúc hợp đồng.\"\n  * V2 = \"Tiền đặt cọc: 12.000.000 VNĐ (Mười hai triệu đồng), sẽ được hoàn trả khi kết thú",
+      "compare_completeness": 1.0,
+      "response_time_s": 15.26,
+      "num_expected_changes": 5,
+      "error": null
+    },
+    {
+      "id": "C002",
+      "article_name": "Điều 4",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Điều 4]: V1 = \"Thời hạn thuê: 12 tháng, từ ngày 01/02/2024 đến ngày 31/01/2025.\" → V2 = \"Thời hạn thuê: 24 tháng, từ ngày 01/02/2024 đến ngày 31/01/2026.\"\n- [Điều 4.2]: V1 = \"Sau khi hết hạn, nếu hai bên có nhu cầu tiếp tục, sẽ ký phụ lục gia hạn.\" → V2 = \"Sau khi hết hạn, nếu hai bên có nhu cầu tiếp tục, sẽ ký phụ lục gia hạn.\"\n- [Điều 4.3]: V1 = \"Không phát hiện\" → V2 = \"Bên B có quyền chấm dứt hợp đồng trước hạn nếu thông báo trước 2 tháng.\"\n\n**2. NỘI DUNG MỚI THÊM/B",
+      "compare_completeness": 1.0,
+      "response_time_s": 10.63,
+      "num_expected_changes": 2,
+      "error": null
+    },
+    {
+      "id": "C003",
+      "article_name": "Điều 2",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Trường/Khoản]: 2.3: V1 = \"Nhà mới xây, đầy đủ nội thất cơ bản.\" → V2 = \"Nhà mới xây, đầy đủ nội thất cao cấp (tủ lạnh, máy giặt, điều hòa).\"\n\n**2. NỘI DUNG MỚI THÊM/BỎ ĐI**\n\n- V2 thêm mới: \n  * \"Nhà mới xây, đầy đủ nội thất cao cấp (tủ lạnh, máy giặt, điều hòa).\"\n  \n- Không phát hiện nội dung mới/bỏ đi\n\n**3. ĐIỂM GIỐNG NHAU**\n- Không phát hiện điểm giống nhau rõ ràng\n\n**4. TÓM TẮT V1 (ThueNha_V1)**\n- Điều 2: Đối tượng của Hợp Đồng\n  * Bên A đồng ý cho Bên B thuê nhà ở t",
+      "compare_completeness": 1.0,
+      "response_time_s": 9.08,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C004",
+      "article_name": "Điều 5",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Điều 5]: V1 = \"Không tăng giá thuê trong thời hạn hợp đồng.\" → V2 = \"Không tăng giá thuê trong 12 tháng đầu. Sau đó có thể tăng tối đa 10%/năm.\"\n\n**2. NỘI DUNG MỚI THÊM/BỎ ĐI**\n\n- V2 thêm mới: \n  * Không tăng giá thuê trong 12 tháng đầu.\n  * Có thể tăng tối đa 10%/năm.\n\n- V1 có nhưng V2 bỏ: \n  * Không tăng giá thuê trong thời hạn hợp đồng.\n\n**3. ĐIỂM GIỐNG NHAU**\n\n- Không phát hiện điểm giống nhau rõ ràng\n\n**4. TÓM TẮT V1 (ThueNha_V1)**\n\n- Bàn giao nhà đúng thời hạn tro",
+      "compare_completeness": 1.0,
+      "response_time_s": 7.54,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C005",
+      "article_name": "Điều 6",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n* [Trường/Khoản]: 6.5: V1 = \"Chịu chi phí điện, nước, internet trong thời gian thuê.\" → V2 = \"Mua bảo hiểm cháy nổ cho tài sản cá nhân.\"\n\n**2. NỘI DUNG MỚI THÊM/BỎ ĐI**\n\n- V2 thêm mới: \"Mua bảo hiểm cháy nổ cho tài sản cá nhân.\"\n- Không phát hiện nội dung mới/bỏ đi\n\n**3. ĐIỂM GIỐNG NHAU**\n- Không phát hiện điểm giống nhau rõ ràng.\n\n**4. TÓM TẮT V1 (ThueNha_V1)**\n- Trách nhiệm của Bên B bao gồm: Thanh toán tiền thuê đầy đủ và đúng hạn, giữ gìn và bảo quản nhà và tài sản, kh",
+      "compare_completeness": 1.0,
+      "response_time_s": 7.86,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C006",
+      "article_name": "Điều 7",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Điều 7.1]: V1 = \"Mọi tranh chấp sẽ được giải quyết thông qua thương lượng.\" → V2 = \"Mọi tranh chấp sẽ được giải quyết thông qua thương lượng, hòa giải.\"\n\n**2. NỘI DUNG MỚI THÊM/BỎ ĐI**\n\n- V2 thêm mới: \n  * \"Mọi tranh chấp sẽ được giải quyết thông qua thương lượng, hòa giải.\" (Trong Điều 7.1)\n\n**3. ĐIỂM GIỐNG NHAU**\n- Không phát hiện điểm giống nhau rõ ràng.\n\n**4. TÓM TẮT V1 (ThueNha_V1)**\n- Mọi tranh chấp sẽ được giải quyết thông qua thương lượng.\n- Hợp đồng có hiệu lực",
+      "compare_completeness": 0.0,
+      "response_time_s": 7.36,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C007",
+      "article_name": "Điều 3",
+      "source_v1": "HopDong_V1",
+      "source_v2": "HopDong_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Khoản 1]: V1 = \"Ký hợp đồng\" → V2 = \"Ký hợp đồng\"\n- [Khoản 1]: V1 = \"05 ngày làm việc kể từ khi ký hợp đồng\" → V2 = \"03 ngày làm việc kể từ khi ký hợp đồng\"\n- [Khoản 2]: V1 = \"ông Nguyễn Văn X (Trưởng phòng IT)\" → V2 = \"Ban quản lý dự án (gồm 3 nhân sự)\"\n- [Khoản 3]: V1 = \"thanh toán đúng hạn và đầy đủ\" → V2 = \"thanh toán đúng hạn theo quy định\"\n- [Khoản 4]: V2 = \"Quá thời hạn này mà không có phản hồi bằng văn bản, hệ thống coi như đã được nghiệm thu.\" → V2 = \"Thanh toá",
+      "compare_completeness": 1.0,
+      "response_time_s": 14.21,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C008",
+      "article_name": "Điều 5",
+      "source_v1": "HopDong_V1",
+      "source_v2": "HopDong_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Điều 5]: \n  * V1 = \"Khoản 1. Hai bên cam kết bảo mật tuyệt đối các thông tin, tài liệu, dữ liệu kinh doanh liên quan đến hợp đồng này. Nghĩa vụ bảo mật có hiệu lực trong suốt thời gian thực hiện hợp đồng và kéo dài thêm 01 năm sau khi thanh lý hợp đồng.\"\n  * V2 = \"Khoản 1. Hai bên cam kết bảo mật tuyệt đối thông tin, dữ liệu liên quan. Nghĩa vụ bảo mật là vô thời hạn.\"\n\n- [Điều 5 Khoản 2]:\n  * V1 = \"Khoản 2. Toàn bộ bản quyền, sở hữu trí tuệ đối với phần mềm, mã nguồn v",
+      "compare_completeness": 0.0,
+      "response_time_s": 13.63,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C009",
+      "article_name": "Điều 3",
+      "source_v1": "PhuLuc_V1",
+      "source_v2": "PhuLuc_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n* [Khoản 1]: V1 = \"Khoản 1. Nếu Uptime hàng tháng giảm xuống dưới 99.9% nhưng vẫn trên 99.0%, Bên B sẽ hoàn trả 5% phí duy trì của tháng đó cho Bên A.\" → V2 = \"Khoản 1. Nếu Uptime hàng tháng giảm xuống dưới 99.95% nhưng vẫn trên 99.0%, Bên B sẽ hoàn trả 8% phí duy trì của tháng đó cho Bên A.\"\n* [Khoản 2]: V1 = \"Khoản 2. Nếu Uptime dưới 99.0%, mức hoàn trả là 15% phí duy trì của tháng đó.\" → V2 = \"Khoản 2. Nếu Uptime dưới 99.0%, mức hoàn trả là 20% phí duy trì của tháng đó.",
+      "compare_completeness": 0.0,
+      "response_time_s": 12.9,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C010",
+      "article_name": "Điều 5",
+      "source_v1": "PhuLuc_V1",
+      "source_v2": "PhuLuc_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n* [Điều 5]: V1 = \"Hiệu lực phụ lục Khoản 1. Phụ lục này có hiệu lực cùng ngày với Hợp đồng chính và là phần không thể tách rời của Hợp đồng. Bất kỳ sửa đổi nào cũng phải được lập thành văn bản.\" → V2 = \"Quyền kiểm toán định kỳ Khoản 1. Bên A có quyền yêu cầu kiểm toán hệ thống an toàn thông tin của Bên B tối đa mỗi năm một lần. Chi phí kiểm toán do Bên A chi trả. Bên B phải cung cấp đầy đủ log truy cập khi có yêu cầu.\"\n\n**2. NỘI DUNG MỚI THÊM/BỎ ĐI**\n\n- V2 thêm mới: \"Bên A",
+      "compare_completeness": 1.0,
+      "response_time_s": 8.76,
+      "num_expected_changes": 1,
+      "error": null
+    },
+    {
+      "id": "C011",
+      "article_name": "Điều 1",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "**1. ĐIỂM KHÁC BIỆT**\n\n- [Trường/Khoản]: 1.1. Bên cho thuê (Bên A):\n  * V1 = \"• Họ và tên: Nguyễn Văn A\"\n  * V2 = \"• Họ và tên: Nguyễn Văn A\"\n\n- [Trường/Khoản]: Không phát hiện sự khác biệt\n\n**2. NỘI DUNG MỚI THÊM/BỎ ĐI**\n\n- V2 thêm mới:\n  * Không phát hiện nội dung mới/bỏ đi\n\n**3. ĐIỂM GIỐNG NHAU**\n\n- Không phát hiện điểm giống nhau rõ ràng\n\n**4. TÓM TẮT V1 (ThueNha_V1)**\n\nĐiều 1: Các bên tham gia hợp đồng\n1.1. Bên cho thuê (Bên A):\n• Họ và tên: Nguyễn Văn A\n• CMND: 001234567890\n• Địa chỉ: 123 ",
+      "compare_completeness": 0.5,
+      "response_time_s": 8.51,
+      "num_expected_changes": 2,
+      "error": null
+    },
+    {
+      "id": "C012",
+      "article_name": "Điều 10",
+      "source_v1": "ThueNha_V1",
+      "source_v2": "ThueNha_V2",
+      "comparison_report": "Không tìm thấy điều khoản này trong cả hai phiên bản tài liệu.",
+      "compare_completeness": 1.0,
+      "response_time_s": 0.0,
+      "num_expected_changes": 0,
+      "error": null
+    }
+  ]
+}
