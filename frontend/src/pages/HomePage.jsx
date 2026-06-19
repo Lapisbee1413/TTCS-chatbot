@@ -98,8 +98,8 @@ export default function HomePage() {
           }}
         />
 
-        <Box sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+        <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, mb: 2 }}>
             <AutoAwesome sx={{ fontSize: 28, opacity: 0.9 }} />
             <Chip
               label="RAG + Local LLM"
@@ -130,13 +130,13 @@ export default function HomePage() {
             variant="body1"
             sx={{
               opacity: 0.85,
-              maxWidth: 520,
+              maxWidth: 600,
+              mx: 'auto',
               lineHeight: 1.7,
               fontSize: '1rem',
             }}
           >
-            Hệ thống AI hỗ trợ phân tích, so sánh và tra cứu tài liệu pháp lý
-            với cơ chế RAG (Retrieval-Augmented Generation) và mô hình ngôn ngữ chạy cục bộ.
+            Hệ thống AI hỗ trợ phân tích, so sánh và tra cứu tài liệu pháp lý với cơ chế RAG (Retrieval-Augmented Generation) và mô hình ngôn ngữ chạy cục bộ.
           </Typography>
         </Box>
       </Paper>

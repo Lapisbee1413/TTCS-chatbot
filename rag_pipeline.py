@@ -12,6 +12,11 @@ Week 11: Cải tiến chất lượng
 """
 
 import os
+
+# ── Force offline mode: dùng model đã cache, không cần mạng ──
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+
 import re
 import uuid
 from collections import defaultdict
@@ -581,7 +586,7 @@ def _lexical_overlap_score(query: str, text: str) -> float:
 
 def _rerank_and_diversify_hits(query: str, hits: List[dict], top_k: int, is_cross_doc: bool) -> List[dict]:
     """
-    Hybrid rerank (dense + lexical overlap) và đa dạng nguồn cho câu hỏi cross-document.
+    Hybrid rerank (dense + lexical overlap) và đa dạng nguồn cho câu hỏi cross-document. Ghép giữa ngữ nghĩa và từ khoá để truy xuất chính xác điều cần tìm.
     """
     query_lower = query.lower()
     expects_money = any(k in query_lower for k in ["giá", "giá trị", "bao nhiêu", "chi phí", "lương", "cọc"])
